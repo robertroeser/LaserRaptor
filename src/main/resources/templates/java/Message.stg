@@ -1,0 +1,27 @@
+
+message(generated_date, laser_raptor_version, package_name, class_name, fields, setters, getters) ::= <<
+// GENERATED ON <generated_date> BY LASER RAPTOR VERSION <laser_raptor_version>
+package <package_name>;
+
+public class <class_name> {
+    <fields>
+    public <class_name> {}
+    <setters>
+    <getters>
+}
+>>
+
+fields(fieldMap) ::= <<
+<fieldMap.keys : { k | private <fieldMap.(k)> <k>;
+}>
+>>
+
+getters(fieldMap) ::= <<
+<fieldMap.keys : { k | private <fieldMap.(k).type> <fieldMap.(k).accessorName>() { return <k>; \}
+}>
+>>
+
+setters(fieldMap) ::= <<
+<fieldMap.keys : { k | private void <fieldMap.(k).accessorName>(<fieldMap.(k).type> <k>) { this.<k> = <k>; \}
+}>
+>>

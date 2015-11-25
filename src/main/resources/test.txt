@@ -1,0 +1,40 @@
+package - the oput package name
+
+
+
+message - message that is sent
+ = data types for a message
+    - byte
+    - short
+    - int
+    - long
+    - float
+    - double
+    - string
+    - list
+    - map
+    - byte[]
+
+request - stream of 1 - ie a single request/reply
+requestN - finite stream of many
+fire - fire and forget,  sends a request that has no response
+subscribe - infinite stream
+channel - bi-direction in infinite stream
+
+
+--example--
+package = 'com.netflix.foo'
+
+message FooRequest {
+    long accountId
+}
+
+message FooResponse {
+    string firstName
+    string lastName
+    int age
+}
+
+service FooService {
+    request lookup (FooRequest) return (FooResponse)
+}
