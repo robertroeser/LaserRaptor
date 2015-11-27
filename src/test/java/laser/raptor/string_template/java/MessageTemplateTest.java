@@ -15,7 +15,7 @@ public class MessageTemplateTest {
         String fieldsTest = MessageTemplate
                 .newMessageTemplate()
                 .addField(MessageTemplate.MessageFieldTypes.BYTE, "aByte")
-                .addField(MessageTemplate.MessageFieldTypes.BYTE_ARRAY, "aByteArray")
+                .addField(MessageTemplate.MessageFieldTypes.BINARY, "aByteArray")
                 .addField(MessageTemplate.MessageFieldTypes.DOUBLE, "aDouble")
                 .addField(MessageTemplate.MessageFieldTypes.LIST, "aList")
                 .renderFields();
@@ -29,7 +29,7 @@ public class MessageTemplateTest {
         String gettersTest = MessageTemplate
                 .newMessageTemplate()
                 .addField(MessageTemplate.MessageFieldTypes.BYTE, "aByte")
-                .addField(MessageTemplate.MessageFieldTypes.BYTE_ARRAY, "aByteArray")
+                .addField(MessageTemplate.MessageFieldTypes.BINARY, "aByteArray")
                 .addField(MessageTemplate.MessageFieldTypes.DOUBLE, "aDouble")
                 .addField(MessageTemplate.MessageFieldTypes.LIST, "aList")
                 .renderGetters();
@@ -44,7 +44,7 @@ public class MessageTemplateTest {
         String settersTest = MessageTemplate
                 .newMessageTemplate()
                 .addField(MessageTemplate.MessageFieldTypes.BYTE, "aByte")
-                .addField(MessageTemplate.MessageFieldTypes.BYTE_ARRAY, "aByteArray")
+                .addField(MessageTemplate.MessageFieldTypes.BINARY, "aByteArray")
                 .addField(MessageTemplate.MessageFieldTypes.DOUBLE, "aDouble")
                 .addField(MessageTemplate.MessageFieldTypes.LIST, "aList")
                 .renderSetters();
@@ -60,7 +60,7 @@ public class MessageTemplateTest {
                 .packageName("laser.raptor.test")
                 .<MessageTemplate>className("LasorRaptorTest")
                 .addField(MessageTemplate.MessageFieldTypes.BYTE, "aByte")
-                .addField(MessageTemplate.MessageFieldTypes.BYTE_ARRAY, "aByteArray")
+                .addField(MessageTemplate.MessageFieldTypes.BINARY, "aByteArray")
                 .addField(MessageTemplate.MessageFieldTypes.DOUBLE, "aDouble")
                 .addField(MessageTemplate.MessageFieldTypes.LIST, "aList")
                 .addField(MessageTemplate.MessageFieldTypes.SHORT, "aShort")

@@ -25,7 +25,7 @@ targetCompatibility = 1.8
 
 task copyAntlr(type: Copy) {
     from "${antlr4.output}"
-    into "${sourceSets.main.java.srcDirs[0]}/laser/raptor/antlr"
+    into "${sourceSets.main.java.srcDirs[0]}/laser/raptor/antlr/generated"
     include "*.java"
     include "*.tokens"
 }

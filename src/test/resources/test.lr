@@ -5,20 +5,21 @@ namespace laser.raptor.test;
  * This is a multi-line comment
  */
 message TestMessageRequest {
-    string aString;
+    string : aString;
     int anInt;
 
     message EmbeddedMessage {
-        int size;
-        binary someBytes;
+        int : size;
+        binary : someBytes;
     }
 }
 
 message TestMessageResponse {
-    string aString2;
-    int respCode;
+    string : aString2;
+    int : respCode;
 }
 
+/*
 service TestService {
     request foo(TestMessageRequest) returns (TestMessageResponse);
-}
+}*/

@@ -1,6 +1,6 @@
 // Generated from /Users/rroeser/projects/LaserRaptor/src/main/antlr4/LaserRaptor.g4 by ANTLR 4.2.2
 
-package laser.raptor.antlr;
+package laser.raptor.antlr.generated;
 
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -19,130 +19,117 @@ public class LaserRaptorBaseListener implements LaserRaptorListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterService_func_void(@NotNull LaserRaptorParser.Service_func_voidContext ctx) { }
+	@Override public void enterLaserRaptor(@NotNull LaserRaptorParser.LaserRaptorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitService_func_void(@NotNull LaserRaptorParser.Service_func_voidContext ctx) { }
+	@Override public void exitLaserRaptor(@NotNull LaserRaptorParser.LaserRaptorContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMessage_field(@NotNull LaserRaptorParser.Message_fieldContext ctx) { }
+	@Override public void enterMessageDeclaration(@NotNull LaserRaptorParser.MessageDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMessage_field(@NotNull LaserRaptorParser.Message_fieldContext ctx) { }
+	@Override public void exitMessageDeclaration(@NotNull LaserRaptorParser.MessageDeclarationContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMessage_name(@NotNull LaserRaptorParser.Message_nameContext ctx) { }
+	@Override public void enterNamespaceDeclaration(@NotNull LaserRaptorParser.NamespaceDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMessage_name(@NotNull LaserRaptorParser.Message_nameContext ctx) { }
+	@Override public void exitNamespaceDeclaration(@NotNull LaserRaptorParser.NamespaceDeclarationContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterService(@NotNull LaserRaptorParser.ServiceContext ctx) { }
+	@Override public void enterMessageBody(@NotNull LaserRaptorParser.MessageBodyContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitService(@NotNull LaserRaptorParser.ServiceContext ctx) { }
+	@Override public void exitMessageBody(@NotNull LaserRaptorParser.MessageBodyContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterService_name(@NotNull LaserRaptorParser.Service_nameContext ctx) { }
+	@Override public void enterMessageType(@NotNull LaserRaptorParser.MessageTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitService_name(@NotNull LaserRaptorParser.Service_nameContext ctx) { }
+	@Override public void exitMessageType(@NotNull LaserRaptorParser.MessageTypeContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNamespace(@NotNull LaserRaptorParser.NamespaceContext ctx) { }
+	@Override public void enterMessageBodyDeclaration(@NotNull LaserRaptorParser.MessageBodyDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNamespace(@NotNull LaserRaptorParser.NamespaceContext ctx) { }
+	@Override public void exitMessageBodyDeclaration(@NotNull LaserRaptorParser.MessageBodyDeclarationContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterService_definition(@NotNull LaserRaptorParser.Service_definitionContext ctx) { }
+	@Override public void enterQualifiedName(@NotNull LaserRaptorParser.QualifiedNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitService_definition(@NotNull LaserRaptorParser.Service_definitionContext ctx) { }
+	@Override public void exitQualifiedName(@NotNull LaserRaptorParser.QualifiedNameContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLaser_raptor(@NotNull LaserRaptorParser.Laser_raptorContext ctx) { }
+	@Override public void enterFieldDeclaration(@NotNull LaserRaptorParser.FieldDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLaser_raptor(@NotNull LaserRaptorParser.Laser_raptorContext ctx) { }
+	@Override public void exitFieldDeclaration(@NotNull LaserRaptorParser.FieldDeclarationContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterService_func_returns(@NotNull LaserRaptorParser.Service_func_returnsContext ctx) { }
+	@Override public void enterType(@NotNull LaserRaptorParser.TypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitService_func_returns(@NotNull LaserRaptorParser.Service_func_returnsContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterMessage(@NotNull LaserRaptorParser.MessageContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitMessage(@NotNull LaserRaptorParser.MessageContext ctx) { }
+	@Override public void exitType(@NotNull LaserRaptorParser.TypeContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

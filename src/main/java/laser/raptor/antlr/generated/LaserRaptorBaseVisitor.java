@@ -1,6 +1,6 @@
 // Generated from /Users/rroeser/projects/LaserRaptor/src/main/antlr4/LaserRaptor.g4 by ANTLR 4.2.2
 
-package laser.raptor.antlr;
+package laser.raptor.antlr.generated;
 
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
@@ -20,7 +20,7 @@ public class LaserRaptorBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitService_func_void(@NotNull LaserRaptorParser.Service_func_voidContext ctx) { return visitChildren(ctx); }
+	@Override public T visitLaserRaptor(@NotNull LaserRaptorParser.LaserRaptorContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
@@ -28,7 +28,7 @@ public class LaserRaptorBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMessage_field(@NotNull LaserRaptorParser.Message_fieldContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMessageDeclaration(@NotNull LaserRaptorParser.MessageDeclarationContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
@@ -36,7 +36,7 @@ public class LaserRaptorBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMessage_name(@NotNull LaserRaptorParser.Message_nameContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNamespaceDeclaration(@NotNull LaserRaptorParser.NamespaceDeclarationContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
@@ -44,7 +44,7 @@ public class LaserRaptorBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitService(@NotNull LaserRaptorParser.ServiceContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMessageBody(@NotNull LaserRaptorParser.MessageBodyContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
@@ -52,7 +52,7 @@ public class LaserRaptorBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitService_name(@NotNull LaserRaptorParser.Service_nameContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMessageType(@NotNull LaserRaptorParser.MessageTypeContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
@@ -60,7 +60,7 @@ public class LaserRaptorBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNamespace(@NotNull LaserRaptorParser.NamespaceContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMessageBodyDeclaration(@NotNull LaserRaptorParser.MessageBodyDeclarationContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
@@ -68,7 +68,7 @@ public class LaserRaptorBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitService_definition(@NotNull LaserRaptorParser.Service_definitionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitQualifiedName(@NotNull LaserRaptorParser.QualifiedNameContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
@@ -76,7 +76,7 @@ public class LaserRaptorBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitLaser_raptor(@NotNull LaserRaptorParser.Laser_raptorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFieldDeclaration(@NotNull LaserRaptorParser.FieldDeclarationContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
@@ -84,13 +84,5 @@ public class LaserRaptorBaseVisitor<T> extends AbstractParseTreeVisitor<T> imple
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitService_func_returns(@NotNull LaserRaptorParser.Service_func_returnsContext ctx) { return visitChildren(ctx); }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitMessage(@NotNull LaserRaptorParser.MessageContext ctx) { return visitChildren(ctx); }
+	@Override public T visitType(@NotNull LaserRaptorParser.TypeContext ctx) { return visitChildren(ctx); }
 }
