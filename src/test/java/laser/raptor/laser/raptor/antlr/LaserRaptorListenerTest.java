@@ -18,6 +18,16 @@ import static org.junit.Assert.*;
  */
 public class LaserRaptorListenerTest {
     @Test
+    public void testShouldParseValidIDL() throws Exception {
+        LaserRaptorLexer lexer = new LaserRaptorLexer(new ANTLRFileStream("/Users/rroeser/projects/LaserRaptor/src/test/resources/test.lr"));
+        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+
+        LaserRaptorParser parser = new LaserRaptorParser(tokenStream);
+        ParserRuleContext laserRaptorContext = parser.laserRaptor();
+        System.out.println(laserRaptorContext.toStringTree(parser));
+    }
+
+    @Test
     public void testShouldCreateOneMessage() throws Exception {
         LaserRaptorLexer lexer = new LaserRaptorLexer(new ANTLRFileStream("/Users/rroeser/projects/LaserRaptor/src/test/resources/simpleMessage.lr"));
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
@@ -90,6 +100,21 @@ public class LaserRaptorListenerTest {
         assertTrue(fields.containsKey("aList"));
         assertTrue(fields.containsKey("aMap"));
         assertTrue(fields.containsKey("aBinary"));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testShouldThrowExceptionBecauseOfDuplicateFields() throws Exception {
+        LaserRaptorLexer lexer = new LaserRaptorLexer(new ANTLRFileStream("/Users/rroeser/projects/LaserRaptor/src/test/resources/duplicateFieldsMessage.lr"));
+        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+
+        LaserRaptorParser parser = new LaserRaptorParser(tokenStream);
+        ParserRuleContext laserRaptorContext = parser.laserRaptor();
+        System.out.println(laserRaptorContext.toStringTree(parser));
+
+        LaserRaptorListener laserRaptorListener = new LaserRaptorListener();
+
+        ParseTreeWalker walker = new ParseTreeWalker();
+        walker.walk(laserRaptorListener, laserRaptorContext);
     }
 
 }

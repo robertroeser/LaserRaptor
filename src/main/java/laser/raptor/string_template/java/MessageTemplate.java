@@ -57,6 +57,10 @@ public class MessageTemplate extends JavaTemplate {
     }
 
     public MessageTemplate addField(String type, String name) {
+        if (fields.containsKey(name)) {
+            throw new IllegalStateException("Duplicate field " + name + " found");
+        }
+
         fields.put(name, type);
         return this;
     }

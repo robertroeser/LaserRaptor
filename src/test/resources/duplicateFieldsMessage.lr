@@ -9,6 +9,7 @@ message TestMessageRequest {
     short aShort;
     int aInt;
     long aLong;
+    long aLong;
     float aFloat;
     double aDouble;
     string aString;

@@ -14,6 +14,13 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface LaserRaptorVisitor<T> extends ParseTreeVisitor<T> {
 	/**
+	 * Visit a parse tree produced by {@link LaserRaptorParser#serviceBody}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitServiceBody(@NotNull LaserRaptorParser.ServiceBodyContext ctx);
+
+	/**
 	 * Visit a parse tree produced by {@link LaserRaptorParser#laserRaptor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -63,11 +70,25 @@ public interface LaserRaptorVisitor<T> extends ParseTreeVisitor<T> {
 	T visitQualifiedName(@NotNull LaserRaptorParser.QualifiedNameContext ctx);
 
 	/**
+	 * Visit a parse tree produced by {@link LaserRaptorParser#serviceBodyDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitServiceBodyDeclaration(@NotNull LaserRaptorParser.ServiceBodyDeclarationContext ctx);
+
+	/**
 	 * Visit a parse tree produced by {@link LaserRaptorParser#fieldDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitFieldDeclaration(@NotNull LaserRaptorParser.FieldDeclarationContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link LaserRaptorParser#serviceDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitServiceDeclaration(@NotNull LaserRaptorParser.ServiceDeclarationContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link LaserRaptorParser#type}.

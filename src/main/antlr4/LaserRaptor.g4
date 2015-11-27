@@ -9,7 +9,7 @@ package laser.raptor.antlr.generated;
 }
 
 laserRaptor
-    : namespaceDeclaration? messageDeclaration* EOF
+    : namespaceDeclaration? messageDeclaration* serviceDeclaration EOF
     ;
 
 namespaceDeclaration
@@ -50,99 +50,26 @@ messageType
     | 'binary'
     ;
 
- /*:
-
-MESSAGE_TYPE
-    : BYTE_LITERAL
-    | SHORT_LITERAL
-    | INT_LITERAL
-    | LONG_LITERAL
-    | FLOAT_LITERAL
-    | DOUBLE_LITERAL
-    | STRING_LITERAL
-    | LIST_LITERAL
-    | MAP_LITERAL
-    | BINARY_LITERAL
+serviceDeclaration
+    :   'service' Identifier
+        serviceBody
     ;
 
- classBodyDeclaration
-     :   ';'
-     |   'static'? block
-     |   modifier* memberDeclaration
-     ;
+serviceBody : '{' serviceBodyDeclaration* '}' ;
 
- lassDeclaration
-     :   'class' Identifier typeParameters?
-         ('extends' type)?
-         ('implements' typeList)?
-         classBody
-     ;
- message_name message_field (message_field | message)+ R_CURLY
-    ;*/
-/*
-
-message_name : MESSAGE_LITERAL Identifier L_CURLY ;
-
-MESSAGE_LITERAL : 'message' ;
-
-message_field : MESSAGE_TYPE MESSAGE_FIELD_NAME SEMI_COLON ;
-
-MESSAGE_FIELD_NAME : Identifier ;
-
-//-- Laser Raptor Types --
-MESSAGE_TYPE
-    : BYTE_LITERAL
-    | SHORT_LITERAL
-    | INT_LITERAL
-    | LONG_LITERAL
-    | FLOAT_LITERAL
-    | DOUBLE_LITERAL
-    | STRING_LITERAL
-    | LIST_LITERAL
-    | MAP_LITERAL
-    | BINARY_LITERAL
+serviceBodyDeclaration
+    : Request Identifier Identifier 'returns' Identifier ';'
+    | RequestN Identifier Identifier 'returns' Identifier ';'
+    | Subscribe Identifier Identifier 'returns' Identifier ';'
+    | Channel Identifier Identifier 'returns' Identifier ';'
+    | Fire Identifier Identifier 'returns' Identifier ';'
     ;
 
-BYTE_LITERAL : 'byte' ;
-SHORT_LITERAL : 'short' ;
-INT_LITERAL : 'int' ;
-LONG_LITERAL : 'long' ;
-FLOAT_LITERAL : 'float';
-DOUBLE_LITERAL : 'double' ;
-STRING_LITERAL : 'string' ;
-LIST_LITERAL : 'list' ;
-MAP_LITERAL : 'map' ;
-BINARY_LITERAL : 'binary' ;
-//-- Laser Raptor Types --
-
-service
-   : SERVICE SERVICE_NAME L_CURLY service_definition (service_definition)* R_CURLY
-   ;
-
-SERVICE : 'service' ;
-
-SERVICE_NAME : identifier ;
-
-service_definition
-    : service_func_returns
-    | service_func_void
-    ;
-
-service_func_returns
-    : 'request' Identifier '(' Identifier ')' RETURNS '(' Identifier ')' SEMI_COLON
-    | 'requestN' Identifier '(' Identifier ')' RETURNS '(' Identifier ')' SEMI_COLON
-    | 'subscribe' Identifier '(' Identifier ')' RETURNS '(' Identifier ')' SEMI_COLON
-    | 'channel' Identifier '(' Identifier ')' RETURNS '(' Identifier ')' SEMI_COLON
-    ;
-
-service_func_void : 'fire' Identifier '(' Identifier ')' RETURNS '(' Identifier ')' SEMI_COLON ;
-
-RETURNS : 'returns' ;
-SEMI_COLON : ';' ;
-L_CURLY : '{' ;
-R_CURLY : '}' ;
-L_PAREN : '(' ;
-R_PAREN : ')' ;*/
+Request : 'request' ;
+RequestN : 'requestN' ;
+Subscribe : 'subscribe' ;
+Channel : 'channel' ;
+Fire : 'fire' ;
 
 qualifiedName
     :   Identifier ('.' Identifier)*

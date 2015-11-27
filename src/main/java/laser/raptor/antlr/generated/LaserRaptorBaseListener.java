@@ -19,6 +19,19 @@ public class LaserRaptorBaseListener implements LaserRaptorListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterServiceBody(@NotNull LaserRaptorParser.ServiceBodyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitServiceBody(@NotNull LaserRaptorParser.ServiceBodyContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterLaserRaptor(@NotNull LaserRaptorParser.LaserRaptorContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -110,6 +123,19 @@ public class LaserRaptorBaseListener implements LaserRaptorListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterServiceBodyDeclaration(@NotNull LaserRaptorParser.ServiceBodyDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitServiceBodyDeclaration(@NotNull LaserRaptorParser.ServiceBodyDeclarationContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterFieldDeclaration(@NotNull LaserRaptorParser.FieldDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -117,6 +143,19 @@ public class LaserRaptorBaseListener implements LaserRaptorListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFieldDeclaration(@NotNull LaserRaptorParser.FieldDeclarationContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterServiceDeclaration(@NotNull LaserRaptorParser.ServiceDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitServiceDeclaration(@NotNull LaserRaptorParser.ServiceDeclarationContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

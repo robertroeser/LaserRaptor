@@ -56,3 +56,7 @@ message E0 {
     }
 }
 
+service TestService {
+    request foo TestMessageRequest returns TestMessageResponse;
+}
+

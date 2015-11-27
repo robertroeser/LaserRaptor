@@ -11,6 +11,17 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface LaserRaptorListener extends ParseTreeListener {
 	/**
+	 * Enter a parse tree produced by {@link LaserRaptorParser#serviceBody}.
+	 * @param ctx the parse tree
+	 */
+	void enterServiceBody(@NotNull LaserRaptorParser.ServiceBodyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LaserRaptorParser#serviceBody}.
+	 * @param ctx the parse tree
+	 */
+	void exitServiceBody(@NotNull LaserRaptorParser.ServiceBodyContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link LaserRaptorParser#laserRaptor}.
 	 * @param ctx the parse tree
 	 */
@@ -88,6 +99,17 @@ public interface LaserRaptorListener extends ParseTreeListener {
 	void exitQualifiedName(@NotNull LaserRaptorParser.QualifiedNameContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link LaserRaptorParser#serviceBodyDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterServiceBodyDeclaration(@NotNull LaserRaptorParser.ServiceBodyDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LaserRaptorParser#serviceBodyDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitServiceBodyDeclaration(@NotNull LaserRaptorParser.ServiceBodyDeclarationContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link LaserRaptorParser#fieldDeclaration}.
 	 * @param ctx the parse tree
 	 */
@@ -97,6 +119,17 @@ public interface LaserRaptorListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFieldDeclaration(@NotNull LaserRaptorParser.FieldDeclarationContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link LaserRaptorParser#serviceDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterServiceDeclaration(@NotNull LaserRaptorParser.ServiceDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LaserRaptorParser#serviceDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitServiceDeclaration(@NotNull LaserRaptorParser.ServiceDeclarationContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link LaserRaptorParser#type}.
