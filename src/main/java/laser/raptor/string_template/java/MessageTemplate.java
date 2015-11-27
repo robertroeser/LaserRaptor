@@ -11,10 +11,9 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import static laser.raptor.string_template.Util.capatilize;
+import static laser.raptor.string_template.Util.capitalize;
 
 public class MessageTemplate extends JavaTemplate {
-
     STGroup messageGroup;
 
     final Map<String, String> fields;
@@ -29,7 +28,7 @@ public class MessageTemplate extends JavaTemplate {
         STRING("String"),
         LIST("java.util.List"),
         MAP("java.util.Map"),
-        BYTE_ARRAY("byte[]");
+        BINARY("byte[]");
 
         String text;
 
@@ -53,7 +52,7 @@ public class MessageTemplate extends JavaTemplate {
     }
 
     public MessageTemplate addField(MessageFieldTypes type, String name) {
-        addField(name, type.text);
+        addField(type.text, name);
         return this;
     }
 
@@ -76,7 +75,7 @@ public class MessageTemplate extends JavaTemplate {
         Map<String, AccessorModel> getterMap = new HashMap<>();
 
         fields
-                .forEach((k,v)-> getterMap.put(k, new AccessorModel(prefix + capatilize(k), v)));
+                .forEach((k,v)-> getterMap.put(k, new AccessorModel(prefix + capitalize(k), v)));
 
         accessor.add("fieldMap", getterMap);
 
@@ -89,6 +88,10 @@ public class MessageTemplate extends JavaTemplate {
 
     protected String renderSetters() {
         return renderAccesor("set", "setters");
+    }
+
+    public Map<String, String> getFields() {
+        return fields;
     }
 
     public String render() {
