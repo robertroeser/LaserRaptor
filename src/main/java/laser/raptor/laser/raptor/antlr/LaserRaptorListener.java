@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static laser.raptor.string_template.Util.uncapitalize;
+import static laser.raptor.string_template.Util.reservedWord;
 
 /**
  * Created by rroeser on 11/26/15.
@@ -36,7 +37,9 @@ public class LaserRaptorListener extends LaserRaptorBaseListener {
         ParseTree child = ctx.getChild(1);
         String messageName = child.getText();
 
-
+        if (reservedWord(messageName)) {
+            throw new InvalidMessageNameException("Can not name a message with a reserved word => " + messageName);
+        }
 
         MessageTemplate newMessageTemplate = MessageTemplate.newMessageTemplate();
         newMessageTemplate.className(messageName);
@@ -44,10 +47,16 @@ public class LaserRaptorListener extends LaserRaptorBaseListener {
         messageTemplates.put(messageName, newMessageTemplate);
 
         if (currentTemplate != null) {
+            String uncapitalize = uncapitalize(newMessageTemplate.getClassName());
+
+            if (reservedWord(uncapitalize)) {
+                throw new InvalidFieldNameException("Can not name a field with a reserved word => " + uncapitalize);
+            }
+
             currentTemplate
                     .addField(
                             newMessageTemplate.getClassName(),
-                            uncapitalize(newMessageTemplate.getClassName()));
+                            uncapitalize);
         }
 
         currentTemplate = newMessageTemplate;
@@ -69,8 +78,14 @@ public class LaserRaptorListener extends LaserRaptorBaseListener {
 
         MessageTemplate.MessageFieldTypes messageFieldType = MessageTemplate.MessageFieldTypes.valueOf(text);
 
+        String fieldNameText = fieldName.getText();
+
+        if (reservedWord(fieldNameText)) {
+            throw new IllegalStateException("Can not name field with a reserved word => " + fieldNameText);
+        }
+
         currentTemplate
-                .addField(messageFieldType, fieldName.getText());
+                .addField(messageFieldType, fieldNameText);
     }
 
     public Map<String, MessageTemplate> getMessageTemplates() {

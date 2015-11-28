@@ -39,6 +39,7 @@ type
 
 messageType
     : 'byte'
+    | 'boolean'
     | 'short'
     | 'int'
     | 'long'

@@ -9,6 +9,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.junit.Test;
 
+import java.net.URL;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -102,9 +103,28 @@ public class LaserRaptorListenerTest {
         assertTrue(fields.containsKey("aBinary"));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = DuplicateFieldNameException.class)
     public void testShouldThrowExceptionBecauseOfDuplicateFields() throws Exception {
-        LaserRaptorLexer lexer = new LaserRaptorLexer(new ANTLRFileStream("/Users/rroeser/projects/LaserRaptor/src/test/resources/duplicateFieldsMessage.lr"));
+        parse("duplicateFieldsMessage.lr");
+    }
+
+    @Test(expected = InvalidMessageNameException.class)
+    public void testShouldThrowExceptionBecauseOfInvalidMessageName() throws Exception {
+        parse("messageWithInvalidName.lr");
+    }
+
+
+    @Test(expected = InvalidMessageNameException.class)
+    public void testShouldThrowExceptionBecauseOfInvalidFieldName() throws Exception {
+        parse("messageWithInvalidName.lr");
+    }
+
+    public void parse(String fileName) throws Exception {
+
+        URL systemResource =
+                ClassLoader.getSystemResource(fileName);
+
+        LaserRaptorLexer lexer = new LaserRaptorLexer(new ANTLRFileStream(systemResource.getFile()));
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
 
         LaserRaptorParser parser = new LaserRaptorParser(tokenStream);

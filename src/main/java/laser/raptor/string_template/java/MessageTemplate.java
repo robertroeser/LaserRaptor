@@ -1,5 +1,6 @@
 package laser.raptor.string_template.java;
 
+import laser.raptor.laser.raptor.antlr.DuplicateFieldNameException;
 import org.stringtemplate.v4.NoIndentWriter;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
@@ -58,7 +59,7 @@ public class MessageTemplate extends JavaTemplate {
 
     public MessageTemplate addField(String type, String name) {
         if (fields.containsKey(name)) {
-            throw new IllegalStateException("Duplicate field " + name + " found");
+            throw new DuplicateFieldNameException("Duplicate field " + name + " found");
         }
 
         fields.put(name, type);
