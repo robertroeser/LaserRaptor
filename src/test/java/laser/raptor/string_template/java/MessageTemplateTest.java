@@ -2,7 +2,7 @@ package laser.raptor.string_template.java;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 public class MessageTemplateTest {
     @Test

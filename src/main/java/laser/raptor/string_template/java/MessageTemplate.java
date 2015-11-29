@@ -15,28 +15,8 @@ import java.util.Map;
 import static laser.raptor.string_template.Util.capitalize;
 
 public class MessageTemplate extends JavaTemplate {
-    STGroup messageGroup;
-
     final Map<String, String> fields;
-
-    public enum MessageFieldTypes {
-        BYTE("byte"),
-        SHORT("short"),
-        INT("int"),
-        LONG("long"),
-        FLOAT("float"),
-        DOUBLE("double"),
-        STRING("String"),
-        LIST("java.util.List"),
-        MAP("java.util.Map"),
-        BINARY("byte[]");
-
-        String text;
-
-        MessageFieldTypes(String text) {
-            this.text = text;
-        }
-    }
+    STGroup messageGroup;
 
     protected MessageTemplate() {
         super();
@@ -80,7 +60,7 @@ public class MessageTemplate extends JavaTemplate {
         Map<String, AccessorModel> getterMap = new HashMap<>();
 
         fields
-                .forEach((k,v)-> getterMap.put(k, new AccessorModel(prefix + capitalize(k), v)));
+                .forEach((k, v) -> getterMap.put(k, new AccessorModel(prefix + capitalize(k), v)));
 
         accessor.add("fieldMap", getterMap);
 
@@ -120,6 +100,25 @@ public class MessageTemplate extends JavaTemplate {
         }
 
         return stringWriter.toString();
+    }
+
+    public enum MessageFieldTypes {
+        BYTE("byte"),
+        SHORT("short"),
+        INT("int"),
+        LONG("long"),
+        FLOAT("float"),
+        DOUBLE("double"),
+        STRING("String"),
+        LIST("java.util.List"),
+        MAP("java.util.Map"),
+        BINARY("byte[]");
+
+        String text;
+
+        MessageFieldTypes(String text) {
+            this.text = text;
+        }
     }
 
     public class AccessorModel {

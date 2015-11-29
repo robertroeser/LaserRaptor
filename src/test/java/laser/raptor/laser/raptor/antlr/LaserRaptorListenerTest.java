@@ -12,7 +12,8 @@ import org.junit.Test;
 import java.net.URL;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by rroeser on 11/26/15.

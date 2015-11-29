@@ -11,12 +11,12 @@ public abstract class JavaTemplate extends Template {
         super("templates/java");
     }
 
-    public  <T extends JavaTemplate> T packageName(String packageName) {
+    public <T extends JavaTemplate> T packageName(String packageName) {
         this.packageName = packageName;
         return (T) this;
     }
 
-    public  <T extends JavaTemplate> T className(String className) {
+    public <T extends JavaTemplate> T className(String className) {
         this.className = className;
         return (T) this;
     }

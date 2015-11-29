@@ -9,8 +9,8 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import java.util.HashMap;
 import java.util.Map;
 
-import static laser.raptor.string_template.Util.uncapitalize;
 import static laser.raptor.string_template.Util.reservedWord;
+import static laser.raptor.string_template.Util.uncapitalize;
 
 /**
  * Created by rroeser on 11/26/15.
