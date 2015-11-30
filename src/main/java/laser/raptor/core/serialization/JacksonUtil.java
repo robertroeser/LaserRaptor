@@ -21,7 +21,7 @@ public class JacksonUtil {
     private static final ObjectMapper cborMapper;
     private static final ObjectMapper jacksonMapper;
 
-    private static final String mapperType = System.getProperty("api.metadata.json.mapper.type", "cbor");
+    private static final String mapperType = System.getProperty("laser.raptor.json.mapper.type", "cbor");
 
     private static final ThreadLocal<DirectBufferInputStream> streamWrapper =
             ThreadLocal.withInitial(DirectBufferInputStream::new);
