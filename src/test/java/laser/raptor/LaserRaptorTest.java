@@ -5,11 +5,9 @@ import org.junit.Test;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
 
 public class LaserRaptorTest {
     @Test
@@ -63,21 +61,13 @@ public class LaserRaptorTest {
         LaserRaptor laserRaptor = new LaserRaptor(systemResource.getFile(), outputDir.getPath());
         laserRaptor.generate();
 
-        boolean found = true;
-
         File packageDir = new File(outputDir, "laser/raptor/test");
 
-        for (int i = 0; i < 4; i++) {
-            final int j = i;
-            found &=
-                    Files
-                            .find(
-                                    packageDir
-                                            .toPath(), 1, (Path p, BasicFileAttributes b) -> ("E" + j) == p.toFile().getName()
-                            )
-                            .findFirst()
-                            .isPresent();
-        }
+        File[] files = packageDir.listFiles((File dir, String name) -> {
+           return name.endsWith(".java");
+        });
+
+        assertEquals(4, files.length);
 
     }
 }

@@ -1,0 +1,84 @@
+message(generated_date, laser_raptor_version, package_name, class_name, methods) ::= <<
+// GENERATED ON <generated_date> BY LASER RAPTOR VERSION <laser_raptor_version>
+package <package_name>;
+
+public class <class_name> extends laser.raptor.core.client.LaserRaptorClientService {
+    protected <class_name>(String host, int port) {
+        super(host, port);
+    }
+
+    <methods>
+
+    public static <class_name> getInstance(Resolver resolver) {
+        return LaserRaptorServiceFactory.getLaserRaptorService(<class_name>.class);
+    }
+}
+>>
+
+requestResponse(methodName, requestType, requestName, serviceId, methodId) ::= <<
+    public Observable\<Void\> <methodName>(<requestType> <requestName>) {
+        Observable.defer(() -> {
+            ByteBuffer requestBuffer = JacksonUtil.writeValueAsByteBuffer(<requestName>);
+            return handleFireAndForget(<serviceId>, <methodId>, requestBuffer);
+        });
+    }
+>>
+
+requestResponse(methodName, requestType, requestName, responseType, serviceId, methodId) ::= <<
+    public Observable\<<ResponseType>\> <methodName>(<requestType> <requestName>) {
+        Observable.defer(() -> {
+            ByteBuffer requestBuffer = JacksonUtil.writeValueAsByteBuffer(<requestName>);
+            return handleRequestResponse(<serviceId>, <methodId>, requestBuffer);
+        })
+        .map(payload -> {
+            ByteBuffer responseBuffer = payload.getData();
+            JacksonUtil.readValueFromByteBuffer(responseBuffer, <responseType>.class);
+        });
+
+    }
+>>
+
+requestStream(methodName, requestType, requestName, responseType, serviceId, methodId) ::= <<
+    public Observable\<<ResponseType>\> <methodName>(<requestType> <requestName>) {
+        Observable.defer(() -> {
+            ByteBuffer requestBuffer = JacksonUtil.writeValueAsByteBuffer(<requestName>);
+            return handleRequestStream(<serviceId>, <methodId>, requestBuffer);
+        })
+        .map(payload -> {
+            ByteBuffer responseBuffer = payload.getData();
+            JacksonUtil.readValueFromByteBuffer(responseBuffer, <responseType>.class);
+        });
+
+    }
+>>
+
+subscription(methodName, requestType, requestName, responseType, serviceId, methodId) ::= <<
+    public Observable\<<ResponseType>\> <methodName>(<requestType> <requestName>) {
+        Observable.defer(() -> {
+            ByteBuffer requestBuffer = JacksonUtil.writeValueAsByteBuffer(<requestName>);
+            return handleSubscription(<serviceId>, <methodId>, requestBuffer);
+        })
+        .map(payload -> {
+            ByteBuffer responseBuffer = payload.getData();
+            JacksonUtil.readValueFromByteBuffer(responseBuffer, <responseType>.class);
+        });
+
+    }
+>>
+
+handleChannel(methodName, requestType, requestName, responseType, serviceId, methodId) ::= <<
+    public Observable\<<ResponseType>\> <methodName>(Observable\<<requestType>\> <requestName>) {
+        Observable.defer(() -> {
+            return
+                handleChannel(
+                    <serviceId>,
+                    <methodId>,
+                    <requestName>.map(r -> JacksonUtil.writeValueAsByteBuffer(r))
+                })
+        .map(payload -> {
+            ByteBuffer responseBuffer = payload.getData();
+            JacksonUtil.readValueFromByteBuffer(responseBuffer, <responseType>.class);
+        });
+
+    }
+>>
