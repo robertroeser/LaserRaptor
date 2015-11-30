@@ -19,6 +19,9 @@ public abstract class LaserRaptorClientService<I, O> {
 
     private ReactiveSocket reactiveSocket;
 
+    // Constructor for testing
+    LaserRaptorClientService() {}
+
     protected LaserRaptorClientService(String host, int port) {
         Observable<WebSocketConnection> wsConnection = HttpClient.newClient("localhost", 8888)
                 //.enableWireLogging(LogLevel.ERROR)

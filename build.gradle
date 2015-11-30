@@ -62,4 +62,5 @@ dependencies {
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:latest.release'
 
     testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-all:1.10.19'
 }
