@@ -129,7 +129,7 @@ public class LaserRaptorListener extends LaserRaptorBaseListener {
         String text = serviceFunctionName.getText();
 
         if (serviceFunctionNames.contains(text)) {
-            throw new IllegalStateException("A function with the name " + text + " already exists");
+            throw new DuplicateServiceFunctionException("A function with the name " + text + " already exists");
         } else {
             serviceFunctionNames.add(text);
         }
@@ -137,7 +137,7 @@ public class LaserRaptorListener extends LaserRaptorBaseListener {
         String interactionModelText = interactionModel.getText();
 
         ClientServiceTemplate.MethodModel model =
-            new ClientServiceTemplate.MethodModel(InteractionModel.valueOf(interactionModelText),
+            new ClientServiceTemplate.MethodModel(InteractionModel.findByInteractionModelTemplateName(interactionModelText),
                 requestType.getText(),
                 responseType == null ? "Void" : responseType.getText(),
                 text,

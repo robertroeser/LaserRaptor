@@ -119,6 +119,10 @@ public class LaserRaptorListenerTest {
     public void testShouldThrowExceptionBecauseOfInvalidFieldName() throws Exception {
         parse("messageWithInvalidName.lr");
     }
+    @Test(expected = DuplicateServiceFunctionException.class)
+    public void testShouldThrowExceptionBecauseOfDuplicateServiceFunctions() throws Exception {
+        parse("duplicateServiceFunction.lr");
+    }
 
     public void parse(String fileName) throws Exception {
 

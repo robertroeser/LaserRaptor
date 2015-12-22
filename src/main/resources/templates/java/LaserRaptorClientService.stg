@@ -15,7 +15,7 @@ public class <class_name> extends laser.raptor.core.client.LaserRaptorClientServ
 }
 >>
 
-fireAndForget(methodName, requestType, requestName, serviceId, methodId) ::= <<
+fire(methodName, requestType, requestName, serviceId, methodId) ::= <<
     public Observable\<Void\> <methodName>(<requestType> <requestName>) {
         Observable.defer(() -> {
             ByteBuffer requestBuffer = JacksonUtil.writeValueAsByteBuffer(<requestName>);
@@ -25,7 +25,7 @@ fireAndForget(methodName, requestType, requestName, serviceId, methodId) ::= <<
 
 >>
 
-requestResponse(methodName, requestType, requestName, responseType, serviceId, methodId) ::= <<
+request(methodName, requestType, requestName, responseType, serviceId, methodId) ::= <<
     public Observable\<<responseType>\> <methodName>(<requestType> <requestName>) {
         Observable.defer(() -> {
             ByteBuffer requestBuffer = JacksonUtil.writeValueAsByteBuffer(<requestName>);
@@ -40,7 +40,7 @@ requestResponse(methodName, requestType, requestName, responseType, serviceId, m
 
 >>
 
-requestStream(methodName, requestType, requestName, responseType, serviceId, methodId) ::= <<
+requestN(methodName, requestType, requestName, responseType, serviceId, methodId) ::= <<
     public Observable\<<responseType>\> <methodName>(<requestType> <requestName>) {
         Observable.defer(() -> {
             ByteBuffer requestBuffer = JacksonUtil.writeValueAsByteBuffer(<requestName>);

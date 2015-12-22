@@ -15,7 +15,7 @@ import rx.Observable;
 
 >>
 
-fireAndForget(hash, method_id, request_type, class_name, service_id, request_type_name) ::= <<
+fire(hash, method_id, request_type, class_name, service_id, request_type_name) ::= <<
 @LaserRaptorServerFunctionMetadata(
         hash =  <hash>,
         methodId = <method_id>,
@@ -32,7 +32,7 @@ public class <class_name> implements FireAndForgetServerFunction\<<request_type>
 
 >>
 
-requestResponse(hash, method_id, request_type, response_type, class_name, service_id, request_type_name) ::= <<
+request(hash, method_id, request_type, response_type, class_name, service_id, request_type_name) ::= <<
 @LaserRaptorServerFunctionMetadata(
         hash =  <hash>,
         methodId = <method_id>,
@@ -49,7 +49,7 @@ public class <class_name> implements RequestResponseServerFunction\<<request_typ
 
 >>
 
-requestStream(hash, method_id, request_type, response_type, class_name, service_id, request_type_name) ::= <<
+requestN(hash, method_id, request_type, response_type, class_name, service_id, request_type_name) ::= <<
   @LaserRaptorServerFunctionMetadata(
           hash =  <hash>,
           methodId = <method_id>,
