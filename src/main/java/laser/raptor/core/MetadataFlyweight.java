@@ -33,8 +33,8 @@ public class MetadataFlyweight {
         metadata.putInt(BitUtil.SIZE_OF_INT, methodId);
     }
 
-    public void getMethodId() {
-        metadata.getInt(BitUtil.SIZE_OF_INT);
+    public int getMethodId() {
+        return metadata.getInt(BitUtil.SIZE_OF_INT);
     }
 
     public long getServiceMethodHash() {
@@ -45,5 +45,16 @@ public class MetadataFlyweight {
         ByteBuffer byteBuffer = metadata.byteBuffer().slice();
         byteBuffer.position(0);
         return byteBuffer;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("MetadataFlyWeight");
+
+        sb.append("service id = ").append(getServiceId()).append('\n');
+        sb.append("method id = ").append(getMethodId()).append('\n');
+        sb.append("service method hash id = ").append(getServiceMethodHash()).append('\n');
+
+        return sb.toString();
     }
 }

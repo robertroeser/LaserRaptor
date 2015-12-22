@@ -1,4 +1,4 @@
-message(generated_date, laser_raptor_version, package_name, class_name, methods) ::= <<
+client(generated_date, laser_raptor_version, package_name, class_name, methods) ::= <<
 // GENERATED ON <generated_date> BY LASER RAPTOR VERSION <laser_raptor_version>
 package <package_name>;
 
@@ -15,17 +15,18 @@ public class <class_name> extends laser.raptor.core.client.LaserRaptorClientServ
 }
 >>
 
-requestResponse(methodName, requestType, requestName, serviceId, methodId) ::= <<
+fireAndForget(methodName, requestType, requestName, serviceId, methodId) ::= <<
     public Observable\<Void\> <methodName>(<requestType> <requestName>) {
         Observable.defer(() -> {
             ByteBuffer requestBuffer = JacksonUtil.writeValueAsByteBuffer(<requestName>);
             return handleFireAndForget(<serviceId>, <methodId>, requestBuffer);
         });
     }
+
 >>
 
 requestResponse(methodName, requestType, requestName, responseType, serviceId, methodId) ::= <<
-    public Observable\<<ResponseType>\> <methodName>(<requestType> <requestName>) {
+    public Observable\<<responseType>\> <methodName>(<requestType> <requestName>) {
         Observable.defer(() -> {
             ByteBuffer requestBuffer = JacksonUtil.writeValueAsByteBuffer(<requestName>);
             return handleRequestResponse(<serviceId>, <methodId>, requestBuffer);
@@ -36,10 +37,11 @@ requestResponse(methodName, requestType, requestName, responseType, serviceId, m
         });
 
     }
+
 >>
 
 requestStream(methodName, requestType, requestName, responseType, serviceId, methodId) ::= <<
-    public Observable\<<ResponseType>\> <methodName>(<requestType> <requestName>) {
+    public Observable\<<responseType>\> <methodName>(<requestType> <requestName>) {
         Observable.defer(() -> {
             ByteBuffer requestBuffer = JacksonUtil.writeValueAsByteBuffer(<requestName>);
             return handleRequestStream(<serviceId>, <methodId>, requestBuffer);
@@ -50,10 +52,11 @@ requestStream(methodName, requestType, requestName, responseType, serviceId, met
         });
 
     }
+
 >>
 
 subscription(methodName, requestType, requestName, responseType, serviceId, methodId) ::= <<
-    public Observable\<<ResponseType>\> <methodName>(<requestType> <requestName>) {
+    public Observable\<<responseType>\> <methodName>(<requestType> <requestName>) {
         Observable.defer(() -> {
             ByteBuffer requestBuffer = JacksonUtil.writeValueAsByteBuffer(<requestName>);
             return handleSubscription(<serviceId>, <methodId>, requestBuffer);
@@ -64,10 +67,11 @@ subscription(methodName, requestType, requestName, responseType, serviceId, meth
         });
 
     }
+
 >>
 
-handleChannel(methodName, requestType, requestName, responseType, serviceId, methodId) ::= <<
-    public Observable\<<ResponseType>\> <methodName>(Observable\<<requestType>\> <requestName>) {
+channel(methodName, requestType, requestName, responseType, serviceId, methodId) ::= <<
+    public Observable\<<responseType>\> <methodName>(Observable\<<requestType>\> <requestName>) {
         Observable.defer(() -> {
             return
                 handleChannel(
@@ -81,4 +85,5 @@ handleChannel(methodName, requestType, requestName, responseType, serviceId, met
         });
 
     }
+
 >>

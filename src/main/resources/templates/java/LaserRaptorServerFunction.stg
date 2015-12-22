@@ -1,0 +1,28 @@
+service(generated_date, laser_raptor_version, package_name, class_name, functions) ::= <<
+// GENERATED ON <generated_date> BY LASER RAPTOR VERSION <laser_raptor_version>
+package <package_name>;
+
+import laser.raptor.core.server.LaserRaptorServerFunctionMetadata;
+import laser.raptor.core.server.server_functions.RequestResponseServerFunction;
+import rx.Observable;
+
+public class <class_name> {
+    <functions>
+}
+>>
+
+function(hash, method_id, request_type, response_type, class_name, service_id, request_type_name) ::= <<
+@LaserRaptorServerFunctionMetadata(
+        hash =  <hash>,
+        methodId = <method_id>,
+        requestClass = <request_type>.class,
+        responseClass = <response_type>.class,
+        serviceClass = <class_name>.class,
+        serviceId = <service_id>)
+public class <class_name> implements RequestResponseServerFunction\<<request_type>, <response_type>\> {
+    @Override
+    public Observable\<<response_type>\> apply(Observable\<<request_type>\> <request_type_name>) {
+        throw new UnsupportedOperationException();
+    }
+}
+>>

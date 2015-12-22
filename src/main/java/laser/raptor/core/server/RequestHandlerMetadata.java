@@ -1,17 +1,16 @@
 package laser.raptor.core.server;
 
+import laser.raptor.core.server.server_functions.ServerFunction;
 import rx.Observable;
-
-import java.util.function.Function;
 
 class RequestHandlerMetadata {
     final int methodId;
     final String serviceClassName;
     final Class<?> requestClass;
     final Class<?> responseClass;
-    final Function<Object, Observable> handler;
+    final ServerFunction<Observable, Observable> handler;
 
-    public RequestHandlerMetadata(int methodId, String serviceClassName, Class<?> requestClass, Class<?> responseClass, Function<Object, Observable> handler) {
+    public RequestHandlerMetadata(int methodId, String serviceClassName, Class<?> requestClass, Class<?> responseClass, ServerFunction<Observable, Observable> handler) {
         this.methodId = methodId;
         this.serviceClassName = serviceClassName;
         this.requestClass = requestClass;
@@ -35,7 +34,7 @@ class RequestHandlerMetadata {
         return responseClass;
     }
 
-    public Function<Object, Observable> getHandler() {
+    public ServerFunction<Observable, Observable> getHandler() {
         return handler;
     }
 }
