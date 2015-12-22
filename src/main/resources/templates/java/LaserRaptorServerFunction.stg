@@ -1,17 +1,38 @@
-service(generated_date, laser_raptor_version, package_name, class_name, functions) ::= <<
+service(generated_date, laser_raptor_version, package_name, class_name, class_body) ::= <<
 // GENERATED ON <generated_date> BY LASER RAPTOR VERSION <laser_raptor_version>
-package <package_name>;
+package <package_name>.<class_name>;
 
+import <package_name>.*;
 import laser.raptor.core.server.LaserRaptorServerFunctionMetadata;
 import laser.raptor.core.server.server_functions.RequestResponseServerFunction;
+import laser.raptor.core.server.server_functions.FireAndForgetServerFunction;
+import laser.raptor.core.server.server_functions.SubscribeServerFunction;
+import laser.raptor.core.server.server_functions.RequestNServerFunction;
+import laser.raptor.core.server.server_functions.ChannelServerFunction;
 import rx.Observable;
 
-public class <class_name> {
-    <functions>
-}
+<class_body>
+
 >>
 
-function(hash, method_id, request_type, response_type, class_name, service_id, request_type_name) ::= <<
+fireAndForget(hash, method_id, request_type, class_name, service_id, request_type_name) ::= <<
+@LaserRaptorServerFunctionMetadata(
+        hash =  <hash>,
+        methodId = <method_id>,
+        requestClass = <request_type>.class,
+        responseClass = Void.class,
+        serviceClass = <class_name>.class,
+        serviceId = <service_id>)
+public class <class_name> implements FireAndForgetServerFunction\<<request_type>\> {
+    @Override
+    public Observable\<Void\> apply(Observable\<<request_type>\> <request_type_name>) {
+        throw new UnsupportedOperationException();
+    }
+}
+
+>>
+
+requestResponse(hash, method_id, request_type, response_type, class_name, service_id, request_type_name) ::= <<
 @LaserRaptorServerFunctionMetadata(
         hash =  <hash>,
         methodId = <method_id>,
@@ -25,4 +46,56 @@ public class <class_name> implements RequestResponseServerFunction\<<request_typ
         throw new UnsupportedOperationException();
     }
 }
+
+>>
+
+requestStream(hash, method_id, request_type, response_type, class_name, service_id, request_type_name) ::= <<
+  @LaserRaptorServerFunctionMetadata(
+          hash =  <hash>,
+          methodId = <method_id>,
+          requestClass = <request_type>.class,
+          responseClass = <response_type>.class,
+          serviceClass = <class_name>.class,
+          serviceId = <service_id>)
+  public class <class_name> implements RequestNServerFunction\<<request_type>, <response_type>\> {
+      @Override
+      public Observable\<<response_type>\> apply(Observable\<<request_type>\> <request_type_name>) {
+          throw new UnsupportedOperationException();
+      }
+  }
+
+>>
+
+subscription(hash, method_id, request_type, response_type, class_name, service_id, request_type_name) ::= <<
+  @LaserRaptorServerFunctionMetadata(
+          hash =  <hash>,
+          methodId = <method_id>,
+          requestClass = <request_type>.class,
+          responseClass = <response_type>.class,
+          serviceClass = <class_name>.class,
+          serviceId = <service_id>)
+  public class <class_name> implements SubscribeServerFunction\<<request_type>, <response_type>\> {
+      @Override
+      public Observable\<<response_type>\> apply(Observable\<<request_type>\> <request_type_name>) {
+          throw new UnsupportedOperationException();
+      }
+  }
+
+>>
+
+channel(hash, method_id, request_type, response_type, class_name, service_id, request_type_name) ::= <<
+  @LaserRaptorServerFunctionMetadata(
+          hash =  <hash>,
+          methodId = <method_id>,
+          requestClass = <request_type>.class,
+          responseClass = <response_type>.class,
+          serviceClass = <class_name>.class,
+          serviceId = <service_id>)
+  public class <class_name> implements ChannelServerFunction\<<request_type>, <response_type>\> {
+      @Override
+      public Observable\<<response_type>\> apply(Observable\<<request_type>\> <request_type_name>) {
+          throw new UnsupportedOperationException();
+      }
+  }
+
 >>

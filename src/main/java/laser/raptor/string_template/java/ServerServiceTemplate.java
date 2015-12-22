@@ -1,31 +1,29 @@
 package laser.raptor.string_template.java;
 
 import laser.raptor.core.InteractionModel;
-import org.stringtemplate.v4.NoIndentWriter;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
 import uk.co.real_logic.agrona.BitUtil;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static laser.raptor.string_template.Util.uncapitalize;
 
 public class ServerServiceTemplate extends JavaTemplate {
 
-    final List<ServiceFunction> serviceFunctions;
+    final List<ServerServiceModel> serverServiceModels;
 
     STGroup serverServiceGroup;
 
     protected ServerServiceTemplate() {
         super();
 
-        serviceFunctions = new ArrayList<>();
+        serverServiceModels = new ArrayList<>();
 
         stGroupDir.load();
         String fileName = stGroupDir.getFileName() + File.separator + "LaserRaptorServerFunction.stg";
@@ -33,63 +31,56 @@ public class ServerServiceTemplate extends JavaTemplate {
 
     }
 
-    public void addServiceFunction(ServiceFunction serviceFunction) {
-        this.serviceFunctions.add(serviceFunction);
+    public ServerServiceTemplate addServerService(ServerServiceModel serverServiceModel) {
+        this.serverServiceModels.add(serverServiceModel);
+        return this;
     }
 
     public static ServerServiceTemplate newServerServiceTemplate() {
         return new ServerServiceTemplate();
     }
 
-    protected String renderFunction(ServiceFunction serviceFunction) {
+    protected String renderFunction(ServerServiceModel serverServiceModel) {
         ST template = serverServiceGroup
-            .getInstanceOf("function");
+            .getInstanceOf(serverServiceModel.getInteractionModel().getInteractionModelTemplateName());
 
-        template.add("hash", serviceFunction.getHash());
-        template.add("method_id", serviceFunction.getMethodId());
-        template.add("request_type", serviceFunction.getRequestType());
+        template.add("hash", serverServiceModel.getHash());
+        template.add("method_id", serverServiceModel.getMethodId());
+        template.add("request_type", serverServiceModel.getRequestType());
 
-        if (!serviceFunction.getInteractionModel().equals(InteractionModel.FIRE_AND_FORGET)) {
-            template.add("response_type", serviceFunction.getResponseType());
-        } else {
-            template.add("response_type", "Void");
+        if (!serverServiceModel.getInteractionModel().equals(InteractionModel.FIRE_AND_FORGET)) {
+            template.add("response_type", serverServiceModel.getResponseType());
         }
 
 
-        template.add("class_name", serviceFunction.getMethodName());
-        template.add("service_id", serviceFunction.getServiceId());
-        template.add("request_type_name", uncapitalize(serviceFunction.getRequestType()) + "Observable");
+        template.add("class_name", serverServiceModel.getMethodName());
+        template.add("service_id", serverServiceModel.getServiceId());
+        template.add("request_type_name", uncapitalize(serverServiceModel.getRequestType()) + "Observable");
 
         return  template.render();
     }
 
-    protected String render() {
+    protected String renderClass(String classBody) {
         ST service = serverServiceGroup.getInstanceOf("service");
 
         service.add("generated_date", generatedDate);
         service.add("laser_raptor_version", laserRaptorVersion);
         service.add("package_name", packageName);
         service.add("class_name", className);
+        service.add("class_body", classBody);
 
-        StringBuilder sb = new StringBuilder();
-
-        serviceFunctions
-            .stream()
-            .map(this::renderFunction)
-            .forEach(sb::append);
-
-        StringWriter stringWriter = new StringWriter();
-        NoIndentWriter writer = new NoIndentWriter(stringWriter);
-        try {
-            service.write(writer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return stringWriter.toString();
+        return service.render();
     }
 
-    public class ServiceFunction {
+    protected List<String> render() {
+        return serverServiceModels
+            .stream()
+            .map(this::renderFunction)
+            .map(this::renderClass)
+            .collect(Collectors.toList());
+    }
+
+    public static class ServerServiceModel {
         InteractionModel interactionModel;
         String requestType;
         String responseType;
@@ -98,7 +89,7 @@ public class ServerServiceTemplate extends JavaTemplate {
         int methodId;
         long hash;
 
-        public ServiceFunction(InteractionModel interactionModel, String requestType, String responseType, String methodName, int serviceId, int methodId, long hash) {
+        public ServerServiceModel(InteractionModel interactionModel, String requestType, String responseType, String methodName, int serviceId, int methodId) {
             this.interactionModel = interactionModel;
             this.requestType = requestType;
             this.responseType = responseType;

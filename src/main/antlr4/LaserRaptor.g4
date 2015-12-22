@@ -63,7 +63,7 @@ serviceBodyDeclaration
     | RequestN Identifier Identifier 'returns' Identifier ';'
     | Subscribe Identifier Identifier 'returns' Identifier ';'
     | Channel Identifier Identifier 'returns' Identifier ';'
-    | Fire Identifier Identifier 'returns' Identifier ';'
+    | Fire Identifier Identifier ';'
     ;
 
 Request : 'request' ;

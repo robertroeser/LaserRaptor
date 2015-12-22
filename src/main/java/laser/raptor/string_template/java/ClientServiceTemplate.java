@@ -43,7 +43,7 @@ public class ClientServiceTemplate extends JavaTemplate {
                 laserRaptorClientService
                         .getInstanceOf(methodModel
                                 .getInteractionModel()
-                                .getMethodTemplateName());
+                                .getInteractionModelTemplateName());
 
         methodTemplate.add("methodName", methodModel.getMethodName());
         methodTemplate.add("requestType", methodModel.getRequestType());
