@@ -2,7 +2,10 @@ package laser.raptor.laser.raptor.antlr;
 
 import laser.raptor.antlr.generated.LaserRaptorLexer;
 import laser.raptor.antlr.generated.LaserRaptorParser;
+import laser.raptor.core.InteractionModel;
+import laser.raptor.string_template.java.ClientServiceTemplate;
 import laser.raptor.string_template.java.MessageTemplate;
+import laser.raptor.string_template.java.ServerServiceTemplate;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -12,12 +15,10 @@ import org.junit.Test;
 import java.net.URL;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by rroeser on 11/26/15.
- */
 public class LaserRaptorListenerTest {
     @Test
     public void testShouldParseValidIDL() throws Exception {
@@ -27,6 +28,39 @@ public class LaserRaptorListenerTest {
         LaserRaptorParser parser = new LaserRaptorParser(tokenStream);
         ParserRuleContext laserRaptorContext = parser.laserRaptor();
         System.out.println(laserRaptorContext.toStringTree(parser));
+    }
+
+    @Test
+    public void testShouldCreateMethodModel() throws Exception {
+        LaserRaptorLexer lexer = new LaserRaptorLexer(new ANTLRFileStream("/Users/rroeser/projects/LaserRaptor/src/test/resources/simpleMessage.lr"));
+        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+
+        LaserRaptorParser parser = new LaserRaptorParser(tokenStream);
+        ParserRuleContext laserRaptorContext = parser.laserRaptor();
+        System.out.println(laserRaptorContext.toStringTree(parser));
+
+        LaserRaptorListener laserRaptorListener = new LaserRaptorListener();
+
+        ParseTreeWalker walker = new ParseTreeWalker();
+        walker.walk(laserRaptorListener, laserRaptorContext);
+
+        Map<String, ClientServiceTemplate> clientServiceTemplates =
+            laserRaptorListener.getClientServiceTemplates();
+        assertTrue(clientServiceTemplates.containsKey("TestService"));
+
+        ClientServiceTemplate testService = clientServiceTemplates.get("TestService");
+        ClientServiceTemplate.MethodModel model = testService.getMethods().get(0);
+
+        assertEquals("foo", model.getMethodName());
+        assertEquals(InteractionModel.REQUEST_RESPONSE, model.getInteractionModel());
+
+        Map<String, ServerServiceTemplate> serverServiceTemplates =
+            laserRaptorListener.getServerServiceTemplates();
+
+        ServerServiceTemplate testService1 = serverServiceTemplates.get("TestService");
+        ServerServiceTemplate.ServerServiceModel serverServiceModel = testService1.getServerServiceModels().get(0);
+        assertEquals("foo", serverServiceModel.getMethodName());
+        assertEquals(InteractionModel.REQUEST_RESPONSE, serverServiceModel.getInteractionModel());
     }
 
     @Test

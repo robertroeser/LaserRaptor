@@ -80,6 +80,10 @@ public class ServerServiceTemplate extends JavaTemplate {
             .collect(Collectors.toList());
     }
 
+    public List<ServerServiceModel> getServerServiceModels() {
+        return serverServiceModels;
+    }
+
     public static class ServerServiceModel {
         InteractionModel interactionModel;
         String requestType;

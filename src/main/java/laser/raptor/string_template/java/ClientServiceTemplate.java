@@ -88,6 +88,10 @@ public class ClientServiceTemplate extends JavaTemplate {
         return stringWriter.toString();
     }
 
+    public List<MethodModel> getMethods() {
+        return methods;
+    }
+
     public static class MethodModel {
         InteractionModel interactionModel;
         String requestType;

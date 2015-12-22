@@ -5,6 +5,7 @@ import laser.raptor.antlr.generated.LaserRaptorParser;
 import laser.raptor.core.InteractionModel;
 import laser.raptor.string_template.java.ClientServiceTemplate;
 import laser.raptor.string_template.java.MessageTemplate;
+import laser.raptor.string_template.java.ServerServiceTemplate;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTree;
 
@@ -16,15 +17,14 @@ import java.util.Set;
 import static laser.raptor.string_template.Util.reservedWord;
 import static laser.raptor.string_template.Util.uncapitalize;
 
-/**
- * Created by rroeser on 11/26/15.
- */
 public class LaserRaptorListener extends LaserRaptorBaseListener {
     private String packageName;
 
     private String currentServiceName = null;
 
     private ClientServiceTemplate currentClientServiceTemplate;
+
+    private ServerServiceTemplate currentServerServiceTemplate;
 
     private MessageTemplate currentMessageTemplate = null;
 
@@ -34,10 +34,13 @@ public class LaserRaptorListener extends LaserRaptorBaseListener {
 
     private Map<String, ClientServiceTemplate> clientServiceTemplates;
 
+    private Map<String, ServerServiceTemplate> serverServiceTemplates;
+
     public LaserRaptorListener() {
         messageTemplates = new HashMap<>();
         serviceFunctionNames = new HashSet<>();
         clientServiceTemplates = new HashMap<>();
+        serverServiceTemplates = new HashMap<>();
     }
 
     @Override
@@ -117,6 +120,11 @@ public class LaserRaptorListener extends LaserRaptorBaseListener {
         currentClientServiceTemplate.className(text);
         currentClientServiceTemplate.packageName(packageName);
         clientServiceTemplates.put(currentServiceName, currentClientServiceTemplate);
+
+        currentServerServiceTemplate = ServerServiceTemplate.newServerServiceTemplate();
+        currentServerServiceTemplate.className(text);
+        currentServerServiceTemplate.packageName(packageName);
+        serverServiceTemplates.put(currentServiceName, currentServerServiceTemplate);
     }
 
     @Override
@@ -136,13 +144,29 @@ public class LaserRaptorListener extends LaserRaptorBaseListener {
 
         String interactionModelText = interactionModel.getText();
 
-        ClientServiceTemplate.MethodModel model =
+        ClientServiceTemplate.MethodModel methodModel =
             new ClientServiceTemplate.MethodModel(InteractionModel.findByInteractionModelTemplateName(interactionModelText),
                 requestType.getText(),
                 responseType == null ? "Void" : responseType.getText(),
                 text,
                 currentServiceName.hashCode(),
                 text.hashCode());
+
+        currentClientServiceTemplate.addMethod(methodModel);
+
+        ServerServiceTemplate.ServerServiceModel serverServiceModel =
+            new ServerServiceTemplate.ServerServiceModel(InteractionModel.findByInteractionModelTemplateName(interactionModelText),
+                requestType.getText(),
+                responseType == null ? "Void" : responseType.getText(),
+                text,
+                currentServiceName.hashCode(),
+                text.hashCode());
+
+        currentServerServiceTemplate.addServerService(serverServiceModel);
+    }
+
+    public Map<String, ServerServiceTemplate> getServerServiceTemplates() {
+        return serverServiceTemplates;
     }
 
     public Map<String, MessageTemplate> getMessageTemplates() {
