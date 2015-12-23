@@ -59,7 +59,7 @@ public class ClientServiceTemplate extends JavaTemplate {
         return methodTemplate.render();
     }
 
-    protected String render() {
+    public String render() {
         ST client = laserRaptorClientService.getInstanceOf("client");
 
         client.add("generated_date", generatedDate);

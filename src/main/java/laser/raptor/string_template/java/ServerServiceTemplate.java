@@ -44,6 +44,7 @@ public class ServerServiceTemplate extends JavaTemplate {
         ST template = serverServiceGroup
             .getInstanceOf(serverServiceModel.getInteractionModel().getInteractionModelTemplateName());
 
+        template.add("service_name", serverServiceModel.getServiceName());
         template.add("hash", serverServiceModel.getHash());
         template.add("method_id", serverServiceModel.getMethodId());
         template.add("request_type", serverServiceModel.getRequestType());
@@ -72,11 +73,15 @@ public class ServerServiceTemplate extends JavaTemplate {
         return service.render();
     }
 
-    protected List<String> render() {
+    public List<RenderedService> render() {
         return serverServiceModels
             .stream()
-            .map(this::renderFunction)
-            .map(this::renderClass)
+            .map(model -> {
+                String function = renderFunction(model);
+                String body = renderClass(function);
+
+                return new RenderedService(model.getServiceName() + "_" + model.getMethodName(), body);
+            })
             .collect(Collectors.toList());
     }
 
@@ -84,8 +89,27 @@ public class ServerServiceTemplate extends JavaTemplate {
         return serverServiceModels;
     }
 
+    public static class RenderedService {
+        String className;
+        String source;
+
+        public RenderedService(String className, String source) {
+            this.className = className;
+            this.source = source;
+        }
+
+        public String getClassName() {
+            return className;
+        }
+
+        public String getSource() {
+            return source;
+        }
+    }
+
     public static class ServerServiceModel {
         InteractionModel interactionModel;
+        String serviceName;
         String requestType;
         String responseType;
         String methodName;
@@ -93,8 +117,9 @@ public class ServerServiceTemplate extends JavaTemplate {
         int methodId;
         long hash;
 
-        public ServerServiceModel(InteractionModel interactionModel, String requestType, String responseType, String methodName, int serviceId, int methodId) {
+        public ServerServiceModel(InteractionModel interactionModel, String serviceName, String requestType, String responseType, String methodName, int serviceId, int methodId) {
             this.interactionModel = interactionModel;
+            this.serviceName = serviceName;
             this.requestType = requestType;
             this.responseType = responseType;
             this.methodName = methodName;
@@ -135,6 +160,10 @@ public class ServerServiceTemplate extends JavaTemplate {
 
         public long getHash() {
             return hash;
+        }
+
+        public String getServiceName() {
+            return serviceName;
         }
     }
 }

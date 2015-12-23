@@ -3,7 +3,9 @@ package laser.raptor;
 import laser.raptor.antlr.generated.LaserRaptorLexer;
 import laser.raptor.antlr.generated.LaserRaptorParser;
 import laser.raptor.laser.raptor.antlr.LaserRaptorListener;
+import laser.raptor.string_template.java.ClientServiceTemplate;
 import laser.raptor.string_template.java.MessageTemplate;
+import laser.raptor.string_template.java.ServerServiceTemplate;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -75,6 +77,8 @@ public class LaserRaptor {
         walker.walk(laserRaptorListener, laserRaptorContext);
 
         Map<String, MessageTemplate> messageTemplates = laserRaptorListener.getMessageTemplates();
+        Map<String, ClientServiceTemplate> clientServiceTemplates = laserRaptorListener.getClientServiceTemplates();
+        Map<String, ServerServiceTemplate> serverServiceTemplates = laserRaptorListener.getServerServiceTemplates();
 
         File outputDirectory = new File(output);
 
@@ -96,6 +100,41 @@ public class LaserRaptor {
             writer.append(render);
             writer.flush();
             writer.close();
+        }
+
+        for (ClientServiceTemplate clientServiceTemplate : clientServiceTemplates.values()) {
+            String packageName = clientServiceTemplate.getPackageName();
+            packageName = packageName.replace(".", File.separator);
+            File packageDir = new File(outputDirectory, packageName);
+            packageDir.mkdirs();
+            String className = clientServiceTemplate.getClassName() + ".java";
+            System.out.printf("Creating class named %s, in package %s", className, packageName);
+            String render = clientServiceTemplate.render();
+            System.out.printf("Writing contents [%s]", render);
+            File classFile = new File(packageDir, className);
+            FileWriter writer = new FileWriter(classFile);
+            writer.append(render);
+            writer.flush();
+            writer.close();
+        }
+
+        for (ServerServiceTemplate template : serverServiceTemplates.values()) {
+            final String packageName = template.getPackageName().replace(".", File.separator);
+            File packageDir = new File(outputDirectory, packageName);
+            packageDir.mkdirs();
+
+
+            for (ServerServiceTemplate.RenderedService renderedService : template.render()) {
+                String className = renderedService.getClassName() + ".java";
+                System.out.printf("Creating class named %s, in package %s", className, packageName);
+                String source = renderedService.getSource();
+                System.out.printf("Writing contents [%s]", source);
+                File classFile = new File(packageDir, className);
+                FileWriter writer = new FileWriter(classFile);
+                writer.append(source);
+                writer.flush();
+                writer.close();
+            }
         }
     }
 }

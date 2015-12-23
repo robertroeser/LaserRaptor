@@ -156,6 +156,7 @@ public class LaserRaptorListener extends LaserRaptorBaseListener {
 
         ServerServiceTemplate.ServerServiceModel serverServiceModel =
             new ServerServiceTemplate.ServerServiceModel(InteractionModel.findByInteractionModelTemplateName(interactionModelText),
+                currentServiceName,
                 requestType.getText(),
                 responseType == null ? "Void" : responseType.getText(),
                 text,
