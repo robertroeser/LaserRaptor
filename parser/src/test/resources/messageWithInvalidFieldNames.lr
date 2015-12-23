@@ -1,0 +1,24 @@
+// This is a comment
+namespace laser.raptor.test;
+
+/*
+ * This is a multi-line comment
+ */
+message TestMessageRequest {
+    byte else;
+    short aShort;
+    int aInt;
+    long aLong;
+    float aFloat;
+    double aDouble;
+    string aString;
+    list aList;
+    map aMap;
+    binary aBinary;
+}
+
+service TestService {
+    request foo TestMessageRequest returns TestMessageResponse;
+}
+
+

@@ -12,56 +12,80 @@ buildscript {
     }
 }
 
-repositories {
-    jcenter()
-    maven { url 'https://oss.jfrog.org/libs-snapshot' }
+subprojects {
+    repositories {
+        jcenter()
+        maven { url 'https://oss.jfrog.org/libs-snapshot' }
+    }
+
+    apply plugin: 'me.champeau.gradle.antlr4'
+    apply plugin: 'idea'
+    apply plugin: 'java'
+
+
+    dependencies {
+        compile 'org.antlr:antlr4-master:4.5.1-1'
+        compile 'org.antlr:stringtemplate:4.0.2'
+        compile 'commons-cli:commons-cli:1.3.1'
+
+        // Client Server Stuff
+        compile 'io.reactivesocket:reactivesocket-websocket-rxnetty:0.0.1-SNAPSHOT'
+        compile 'com.goldmansachs:gs-collections:7.0.0'
+        compile 'uk.co.real-logic:Agrona:0.4.8'
+
+        // Guava - cause why not?
+        compile 'com.google.guava:guava:18.0'
+
+        // Jackson
+        compile 'com.fasterxml.jackson.core:jackson-core:latest.release'
+        compile 'com.fasterxml.jackson.core:jackson-databind:latest.release'
+        compile 'com.fasterxml.jackson.core:jackson-annotations:latest.release'
+        compile 'com.fasterxml.jackson.module:jackson-module-afterburner:latest.release'
+        compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:latest.release'
+
+        testCompile 'junit:junit:4.12'
+        testCompile 'org.mockito:mockito-all:1.10.19'
+        testCompile 'org.slf4j:slf4j-simple:1.7.13'
+    }
 }
 
-apply plugin: 'me.champeau.gradle.antlr4'
-apply plugin: 'idea'
-apply plugin: 'java'
+project(':java-core') {
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-task copyAntlr(type: Copy) {
-    from "${antlr4.output}"
-    into "${sourceSets.main.java.srcDirs[0]}/laser/raptor/antlr/generated"
-    include "*.java"
-    include "*.tokens"
 }
+
+
+project(':java-client') {
+    dependencies {
+        compile project(':java-core')
+    }
+}
+
+
+project(':java-server') {
+    dependencies {
+        compile project(':java-core')
+    }
+}
+
+project(':parser') {
+    dependencies {
+        compile project(':java-core')
+    }
+
+    task copyAntlr(type: Copy) {
+        from "${antlr4.output}"
+        into "${sourceSets.main.java.srcDirs[0]}/laser/raptor/antlr/generated"
+        include "*.java"
+        include "*.tokens"
+    }
 
 // make the Java compile task depend on the antlr4 task
-copyAntlr.dependsOn antlr4
-compileJava.dependsOn copyAntlr
+    copyAntlr.dependsOn antlr4
+    compileJava.dependsOn copyAntlr
 
 
 // add antlr4 to classpath
-configurations {
-    compile.extendsFrom antlr4
-}
-
-dependencies {
-    compile 'org.antlr:antlr4-master:4.5.1-1'
-    compile 'org.antlr:stringtemplate:4.0.2'
-    compile 'commons-cli:commons-cli:1.3.1'
-
-    // Client Server Stuff
-    compile 'io.reactivesocket:reactivesocket-websocket-rxnetty:0.0.1-SNAPSHOT'
-    compile 'com.goldmansachs:gs-collections:7.0.0'
-    compile 'uk.co.real-logic:Agrona:0.4.8'
-
-    // Guava - cause why not?
-    compile 'com.google.guava:guava:18.0'
-
-    // Jackson
-    compile 'com.fasterxml.jackson.core:jackson-core:latest.release'
-    compile 'com.fasterxml.jackson.core:jackson-databind:latest.release'
-    compile 'com.fasterxml.jackson.core:jackson-annotations:latest.release'
-    compile 'com.fasterxml.jackson.module:jackson-module-afterburner:latest.release'
-    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:latest.release'
-
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-all:1.10.19'
-    testCompile 'org.slf4j:slf4j-simple:1.7.13'
+    configurations {
+        compile.extendsFrom antlr4
+    }
 }
