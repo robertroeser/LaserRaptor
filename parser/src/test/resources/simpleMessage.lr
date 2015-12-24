@@ -17,6 +17,10 @@ message TestMessageRequest {
     binary aBinary;
 }
 
+message TestMessageResponse {
+    string aString;
+}
+
 service TestService {
     request foo TestMessageRequest returns TestMessageResponse;
 }

@@ -47,12 +47,15 @@ public class LaserRaptor {
 
         if (cmd.hasOption("h")) {
             help(options);
+            System.exit(-1);
         } else if (!cmd.hasOption("i")) {
             System.out.println("You must specify an input file");
             help(options);
+            System.exit(-1);
         } else if (!cmd.hasOption("o")) {
             System.out.println("You must specify an output location");
             help(options);
+            System.exit(-1);
         }
 
         String input = cmd.getOptionValue("i");

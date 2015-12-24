@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Observable;
 import rx.RxReactiveStreams;
+import rx.functions.Action1;
 import uk.co.real_logic.agrona.LangUtil;
 
 import java.nio.ByteBuffer;
@@ -79,7 +80,11 @@ public class LaserRaptorRequestHandler extends RequestHandler {
                                             laserRaptorFunction.responseClass(),
                                             functionClass.newInstance());
 
+                            logger.info("Loaded LaserRaptor Service with meta data {}", metadata);
+
                             requestHandlerMetadata.put(laserRaptorFunction.hash(), metadata);
+                        } else {
+                            logger.info("Found service named {} but not on list of services to load so skipping", serviceName);
                         }
                     } catch (Exception e) {
                         LangUtil.rethrowUnchecked(e);
@@ -182,6 +187,11 @@ public class LaserRaptorRequestHandler extends RequestHandler {
                     }
                 };
 
+            }).doOnError(new Action1<Throwable>() {
+                @Override
+                public void call(Throwable throwable) {
+                    logger.error("an error occurred processing the request", throwable);
+                }
             }));
     }
 }

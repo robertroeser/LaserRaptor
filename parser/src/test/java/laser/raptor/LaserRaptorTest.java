@@ -24,7 +24,7 @@ public class LaserRaptorTest {
 
         outputDir.mkdirs();
 
-        LaserRaptor laserRaptor = new LaserRaptor(systemResource.getFile(), outputDir.getPath(), true);
+        LaserRaptor laserRaptor = new LaserRaptor(systemResource.getFile(), outputDir.getPath(), false);
         laserRaptor.generate();
 
         assertTrue(outputDir.exists());

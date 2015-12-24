@@ -58,8 +58,8 @@ public class LaserRaptorRequestHandlerTest {
     public void testHandleRequestResponse() {
         LaserRaptorRequestHandler requestHandler = new LaserRaptorRequestHandler();
         requestHandler.scanPackages(
-                ImmutableSet.of("laser.raptor.test1.Func1"),
-                "laser.raptor");
+            ImmutableSet.of("laser.raptor.test1.Func1"),
+            "laser.raptor");
 
         Func1Request request = new Func1Request();
         request.setaString("Hello");
@@ -83,9 +83,49 @@ public class LaserRaptorRequestHandlerTest {
 
         Publisher<Payload> payloadPublisher = requestHandler.handleRequestResponse(payload);
         RxReactiveStreams
-                .toObservable(payloadPublisher)
-                .doOnError(Throwable::printStackTrace)
-                .subscribe(testSubscriber);
+            .toObservable(payloadPublisher)
+            .doOnError(Throwable::printStackTrace)
+            .subscribe(testSubscriber);
+
+        testSubscriber.awaitTerminalEvent(2, TimeUnit.SECONDS);
+        testSubscriber.assertValueCount(1);
+        testSubscriber.assertCompleted();
+    }
+
+    @Test
+    public void testHandlePrimitives() {
+        LaserRaptorRequestHandler requestHandler = new LaserRaptorRequestHandler();
+        requestHandler.scanPackages(
+            ImmutableSet.of("laser.raptor.test1.FuncPrimitive"),
+            "laser.raptor");
+
+        MetadataFlyweight metadataFlyweight = new MetadataFlyweight();
+        metadataFlyweight.setServiceId(300);
+        metadataFlyweight.setMethodId(300);
+        Payload payload = new Payload() {
+            @Override
+            public ByteBuffer getData() {
+                return JacksonUtil.writeValueAsByteBuffer(50);
+            }
+
+            @Override
+            public ByteBuffer getMetadata() {
+                return metadataFlyweight.getByteBuffer();
+            }
+        };
+
+        TestSubscriber testSubscriber = new TestSubscriber();
+
+        Publisher<Payload> payloadPublisher = requestHandler.handleRequestResponse(payload);
+        RxReactiveStreams
+            .toObservable(payloadPublisher)
+            .doOnError(Throwable::printStackTrace)
+            .doOnNext(p -> {
+                ByteBuffer data = p.getData();
+                Object o = JacksonUtil.readValueFromByteBuffer(data, Integer.class);
+                System.out.println(o);
+            })
+            .subscribe(testSubscriber);
 
         testSubscriber.awaitTerminalEvent(2, TimeUnit.SECONDS);
         testSubscriber.assertValueCount(1);

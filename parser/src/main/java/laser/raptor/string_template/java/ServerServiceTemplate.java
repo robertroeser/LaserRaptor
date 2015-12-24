@@ -1,13 +1,12 @@
 package laser.raptor.string_template.java;
 
 import laser.raptor.core.InteractionModel;
+import laser.raptor.core.MetadataFlyweight;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
-import uk.co.real_logic.agrona.BitUtil;
 
 import java.io.File;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -126,12 +125,10 @@ public class ServerServiceTemplate extends JavaTemplate {
             this.serviceId = serviceId;
             this.methodId = methodId;
 
-            ByteBuffer byteBuffer = ByteBuffer.allocate(BitUtil.SIZE_OF_LONG);
-            byteBuffer.putInt(0, serviceId);
-            byteBuffer.putInt(BitUtil.SIZE_OF_INT, methodId);
-
-            this.hash = byteBuffer.getLong(0);
-
+            MetadataFlyweight metadataFlyweight = new MetadataFlyweight();
+            metadataFlyweight.setMethodId(methodId);
+            metadataFlyweight.setServiceId(serviceId);
+            this.hash = metadataFlyweight.getServiceMethodHash();
         }
 
         public InteractionModel getInteractionModel() {

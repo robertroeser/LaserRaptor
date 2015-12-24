@@ -20,10 +20,10 @@ public abstract class LaserRaptorClientService<I, O> {
     private ReactiveSocket reactiveSocket;
 
     // Constructor for testing
-    LaserRaptorClientService() {}
+    protected LaserRaptorClientService() {}
 
     protected LaserRaptorClientService(String host, int port) {
-        Observable<WebSocketConnection> wsConnection = HttpClient.newClient("localhost", 8888)
+        Observable<WebSocketConnection> wsConnection = HttpClient.newClient(host, port)
                 //.enableWireLogging(LogLevel.ERROR)
                 .createGet("/rs")
                 .requestWebSocketUpgrade()

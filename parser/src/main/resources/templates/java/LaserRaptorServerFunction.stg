@@ -16,7 +16,7 @@ import rx.Observable;
 
 fire(hash, method_id, request_type, service_name, class_name, service_id, request_type_name) ::= <<
 @LaserRaptorServerFunctionMetadata(
-        hash =  <hash>,
+        hash =  <hash>L,
         methodId = <method_id>,
         requestClass = <request_type>.class,
         responseClass = Void.class,
@@ -33,7 +33,7 @@ public class <service_name>_<class_name> implements FireAndForgetServerFunction\
 
 request(hash, method_id, request_type, response_type, service_name, class_name, service_id, request_type_name) ::= <<
 @LaserRaptorServerFunctionMetadata(
-        hash =  <hash>,
+        hash =  <hash>L,
         methodId = <method_id>,
         requestClass = <request_type>.class,
         responseClass = <response_type>.class,
@@ -50,7 +50,7 @@ public class <service_name>_<class_name> implements RequestResponseServerFunctio
 
 requestN(hash, method_id, request_type, response_type, service_name, class_name, service_id, request_type_name) ::= <<
   @LaserRaptorServerFunctionMetadata(
-          hash =  <hash>,
+          hash =  <hash>L,
           methodId = <method_id>,
           requestClass = <request_type>.class,
           responseClass = <response_type>.class,
@@ -67,7 +67,7 @@ requestN(hash, method_id, request_type, response_type, service_name, class_name,
 
 subscription(hash, method_id, request_type, response_type, service_name, class_name, service_id, request_type_name) ::= <<
   @LaserRaptorServerFunctionMetadata(
-          hash =  <hash>,
+          hash =  <hash>L,
           methodId = <method_id>,
           requestClass = <request_type>.class,
           responseClass = <response_type>.class,
@@ -84,7 +84,7 @@ subscription(hash, method_id, request_type, response_type, service_name, class_n
 
 channel(hash, method_id, request_type, response_type, service_name, class_name, service_id, request_type_name) ::= <<
   @LaserRaptorServerFunctionMetadata(
-          hash =  <hash>,
+          hash =  <hash>L,
           methodId = <method_id>,
           requestClass = <request_type>.class,
           responseClass = <response_type>.class,

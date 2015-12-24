@@ -3,4 +3,5 @@ include 'parser'
 include 'java-server'
 include 'java-client'
 include 'java-core'
+include 'java-generated-example'
 

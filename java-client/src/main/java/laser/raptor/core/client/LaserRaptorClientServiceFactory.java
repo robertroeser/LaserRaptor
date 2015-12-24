@@ -3,6 +3,7 @@ package laser.raptor.core.client;
 import uk.co.real_logic.agrona.LangUtil;
 
 import java.lang.reflect.Constructor;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -25,7 +26,12 @@ public final class LaserRaptorClientServiceFactory {
             LaserRaptorClientService s = null;
 
             try {
-                Constructor<? extends LaserRaptorClientService> constructor = clazz.getConstructor(String.class, Integer.class);
+                Constructor<?>[] constructors = clazz.getDeclaredConstructors();
+                Arrays.asList(constructors).forEach(c -> {
+                    System.out.println(c.toGenericString());
+                });
+                Constructor<? extends LaserRaptorClientService> constructor = clazz.getDeclaredConstructor(String.class, int.class);
+                constructor.setAccessible(true);
                 s = constructor.newInstance(resolver.host(), resolver.port());
             } catch (Exception e) {
                 LangUtil.rethrowUnchecked(e);
@@ -36,5 +42,6 @@ public final class LaserRaptorClientServiceFactory {
 
         return (T) service;
     }
+
 
 }

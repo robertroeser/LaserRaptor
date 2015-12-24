@@ -5,7 +5,7 @@ package <package_name>;
 
 public class <class_name> {
     <fields>
-    public <class_name> {}
+    public <class_name>() {}
     <setters>
     <getters>
 }
@@ -17,11 +17,11 @@ fields(fieldMap) ::= <<
 >>
 
 getters(fieldMap) ::= <<
-<fieldMap.keys : { k | private <fieldMap.(k).type> <fieldMap.(k).accessorName>() { return <k>; \}
+<fieldMap.keys : { k | public <fieldMap.(k).type> <fieldMap.(k).accessorName>() { return <k>; \}
 }>
 >>
 
 setters(fieldMap) ::= <<
-<fieldMap.keys : { k | private void <fieldMap.(k).accessorName>(<fieldMap.(k).type> <k>) { this.<k> = <k>; \}
+<fieldMap.keys : { k | public void <fieldMap.(k).accessorName>(<fieldMap.(k).type> <k>) { this.<k> = <k>; \}
 }>
 >>

@@ -37,4 +37,15 @@ class RequestHandlerMetadata {
     public ServerFunction<Observable, Observable> getHandler() {
         return handler;
     }
+
+    @Override
+    public String toString() {
+        return "RequestHandlerMetadata{" +
+            "methodId=" + methodId +
+            ", serviceClassName='" + serviceClassName + '\'' +
+            ", requestClass=" + requestClass +
+            ", responseClass=" + responseClass +
+            ", handler=" + handler.getClass().getCanonicalName() +
+            '}';
+    }
 }
