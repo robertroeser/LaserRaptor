@@ -32,6 +32,9 @@ public class LaserRaptor {
 
         System.out.println("Processing input file => " + input);
         System.out.println("Saving contents to output directory => " + output);
+
+        File f = new File(input);
+        System.out.println(f.exists());
     }
 
     public static void main(String... args) throws Exception {
