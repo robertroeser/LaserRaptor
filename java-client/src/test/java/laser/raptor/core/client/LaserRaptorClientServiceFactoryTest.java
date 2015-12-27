@@ -1,12 +1,6 @@
 package laser.raptor.core.client;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-public class LaserRaptorClientServiceFactoryTest {
+public class LaserRaptorClientServiceFactoryTest {/*
     @Test
     public void testGetByClass() {
         E0 e0 = new E0();
@@ -109,5 +103,5 @@ public class LaserRaptorClientServiceFactoryTest {
         public E2(String host, int port) {
             super(host, port);
         }
-    }
+    }*/
 }

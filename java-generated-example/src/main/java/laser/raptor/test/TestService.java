@@ -4,7 +4,7 @@ package laser.raptor.test;
 import io.reactivesocket.Payload;
 import laser.raptor.core.client.LaserRaptorClientService;
 import laser.raptor.core.client.LaserRaptorClientServiceFactory;
-import laser.raptor.core.client.Resolver;
+import laser.raptor.core.client.ReactiveSocketLoadBalancer;
 import laser.raptor.core.serialization.JacksonUtil;
 import rx.Observable;
 
@@ -13,8 +13,8 @@ import java.nio.ByteBuffer;
 public class TestService extends LaserRaptorClientService {
 protected TestService() {}
 
-protected TestService(String host, int port) {
-super(host, port);
+protected TestService(ReactiveSocketLoadBalancer loadBalancer) {
+super(loadBalancer);
 }
 
     public Observable<TestMessageResponse> foo(TestMessageRequest testMessageRequestObservable) {
@@ -29,8 +29,23 @@ super(host, port);
         });
     }
 
+public static TestService getInstance(
+    ReactiveSocketLoadBalancer.SocketAddressFactory socketAddressFactory,
+    ReactiveSocketLoadBalancer.ClosedConnectionsProvider closedConnectionsProvider) {
+        return LaserRaptorClientServiceFactory.getLaserRaptorService(
+            TestService.class,
+            socketAddressFactory,
+            closedConnectionsProvider,
+            ReactiveSocketLoadBalancer.WEB_SOCKET_FACTORY,
+            ReactiveSocketLoadBalancer.LEAST_LOADED_SELECTOR);
+}
 
-public static TestService getInstance(Resolver resolver) {
-return LaserRaptorClientServiceFactory.getLaserRaptorService(TestService.class, resolver);
+public static TestService getInstance(ReactiveSocketLoadBalancer.SocketAddressFactory socketAddressFactory) {
+return LaserRaptorClientServiceFactory.getLaserRaptorService(
+    TestService.class,
+    socketAddressFactory,
+    ReactiveSocketLoadBalancer.NO_CHANGE_PROVIDER,
+    ReactiveSocketLoadBalancer.WEB_SOCKET_FACTORY,
+    ReactiveSocketLoadBalancer.LEAST_LOADED_SELECTOR);
 }
 }

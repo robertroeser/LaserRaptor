@@ -5,11 +5,12 @@ package <package_name>;
 import io.reactivesocket.Payload;
 import laser.raptor.core.client.LaserRaptorClientService;
 import laser.raptor.core.client.LaserRaptorClientServiceFactory;
-import laser.raptor.core.client.Resolver;
+import laser.raptor.core.client.ReactiveSocketLoadBalancer;
 import laser.raptor.core.serialization.JacksonUtil;
 import rx.Observable;
 
 import java.nio.ByteBuffer;
+
 
 public class <class_name> extends LaserRaptorClientService {
     protected <class_name>() {}
@@ -20,8 +21,26 @@ public class <class_name> extends LaserRaptorClientService {
 
     <methods>
 
-    public static <class_name> getInstance(Resolver resolver) {
-        return LaserRaptorServiceFactory.getLaserRaptorService(<class_name>.class, resolver);
+    public static <class_name> getInstance(
+        ReactiveSocketLoadBalancer.SocketAddressFactory socketAddressFactory,
+        ReactiveSocketLoadBalancer.ClosedConnectionsProvider closedConnectionsProvider) {
+            return LaserRaptorServiceFactory
+                .getLaserRaptorService(
+                    <class_name>.class,
+                    socketAddressFactory,
+                    closedConnectionsProvider,
+                    ReactiveSocketLoadBalancer.WEB_SOCKET_FACTORY,
+                    ReactiveSocketLoadBalancer.LEAST_LOADED_SELECTOR);
+     }
+
+    public static <class_name> getInstance(ReactiveSocketLoadBalancer.SocketAddressFactory socketAddressFactory) {
+        return LaserRaptorServiceFactory
+            .getLaserRaptorService(
+                <class_name>.class,
+                socketAddressFactory,
+                ReactiveSocketLoadBalancer.NO_CHANGE_PROVIDER,
+                ReactiveSocketLoadBalancer.WEB_SOCKET_FACTORY,
+                ReactiveSocketLoadBalancer.LEAST_LOADED_SELECTOR);
     }
 }
 >>
