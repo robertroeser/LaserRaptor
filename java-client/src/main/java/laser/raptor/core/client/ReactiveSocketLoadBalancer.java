@@ -30,21 +30,29 @@ class ReactiveSocketLoadBalancer {
 
     private StatsSelector statsSelector;
 
-    private Map<SocketAddress, ReactiveSocketStatsHolder> reactiveSocketStatsHolders = new ConcurrentHashMapUnsafe<>();
+    private NumberGenerator numberGenerator;
 
-    /**
-     * Creates a new instances a ReactiveSocketLoadBalander
-     *
-     * @param socketAddressFactory  Func0 that returns an observable of list of sockets
-     * @param closedConnections     Func0 that gives a diff in the closed connections
-     * @param reactiveSocketFactory Factory to create reactive sockets
-     * @param statsSelector         Func2 that takes two stats are returns the one that is preferable
-     */
+    Map<SocketAddress, ReactiveSocketStatsHolder> reactiveSocketStatsHolders = new ConcurrentHashMapUnsafe<>();
+
     public ReactiveSocketLoadBalancer(
         SocketAddressFactory socketAddressFactory,
         ClosedConnectionsProvider closedConnections,
         ReactiveSocketFactory reactiveSocketFactory,
         StatsSelector statsSelector) {
+        this(
+            socketAddressFactory,
+            closedConnections,
+            reactiveSocketFactory,
+            statsSelector,
+            NUMBER_GENERATOR);
+    }
+
+    public ReactiveSocketLoadBalancer(
+        SocketAddressFactory socketAddressFactory,
+        ClosedConnectionsProvider closedConnections,
+        ReactiveSocketFactory reactiveSocketFactory,
+        StatsSelector statsSelector,
+        NumberGenerator numberGenerator) {
         this.socketAddressFactory = socketAddressFactory;
         this.statsSelector = statsSelector;
         this.reactiveSocketFactory = (SocketAddress socketAddress) -> {
@@ -52,6 +60,7 @@ class ReactiveSocketLoadBalancer {
             return new ReactiveSocketStatsHolder(reactiveSocket);
         };
         this.closedConnections = closedConnections;
+        this.numberGenerator = numberGenerator;
     }
 
     public Observable<ReactiveSocketStatsHolder> nextAvailableSocket() {
@@ -64,10 +73,9 @@ class ReactiveSocketLoadBalancer {
                     SocketAddress socketAddress = socketAddresses.get(0);
                     reactiveSocketStatsHolder = reactiveSocketStatsHolders.computeIfAbsent(socketAddress, reactiveSocketFactory::call);
                 } else {
-                    XORShiftRandom random = XORShiftRandom.getInstance();
 
-                    int first = Math.abs(random.randomInt()) % size;
-                    int second = Math.abs(random.randomInt()) % size;
+                    int first = numberGenerator.nextInt() % size;
+                    int second = numberGenerator.nextInt() % size;
 
                     SocketAddress firstSocket = socketAddresses.get(first);
                     SocketAddress secondSocket = socketAddresses.get(second);
@@ -98,13 +106,18 @@ class ReactiveSocketLoadBalancer {
     public interface ReactiveSocketFactory extends Func1<SocketAddress, ReactiveSocket> {}
     public interface StatsSelector extends Func2<Stats, Stats, Stats> {}
 
+    @FunctionalInterface
+    public interface NumberGenerator {
+        int nextInt();
+    }
+
     /*
      * Simple Implementations
      */
     public static class StaticListFactory implements SocketAddressFactory {
         private List<SocketAddress> socketAddresses;
 
-        protected StaticListFactory(List<SocketAddress> socketAddresses) {
+        private StaticListFactory(List<SocketAddress> socketAddresses) {
             this.socketAddresses = socketAddresses;
         }
 
@@ -158,4 +171,6 @@ class ReactiveSocketLoadBalancer {
             return right;
         }
     };
+
+    public final static NumberGenerator NUMBER_GENERATOR = () -> Math.abs(XORShiftRandom.getInstance().randomInt());
 }

@@ -72,4 +72,14 @@ class ReactiveSocketStatsHolder implements Stats {
             LangUtil.rethrowUnchecked(e);
         }
     }
+
+    @Override
+    public String toString() {
+        return "ReactiveSocketStatsHolder{" +
+            ", outstandingRequests=" + outstandingRequests +
+            ", totalFailures=" + totalFailures +
+            ", totalRequests=" + totalRequests +
+            ", totalNanos=" + totalNanos +
+            '}';
+    }
 }
