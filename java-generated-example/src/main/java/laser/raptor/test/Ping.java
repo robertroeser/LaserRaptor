@@ -1,24 +1,20 @@
 package laser.raptor.test;
 
-import laser.raptor.core.client.Resolver;
+import laser.raptor.core.client.ReactiveSocketLoadBalancer;
 import rx.Observable;
+
+import java.net.InetSocketAddress;
 
 public class Ping {
     public static void main(String... args) {
-        TestService instance = TestService.getInstance(new Resolver() {
-            @Override
-            public String host() {
-                return "localhost";
-            }
+        ReactiveSocketLoadBalancer.StaticListFactory staticListFactory = ReactiveSocketLoadBalancer
+            .StaticListFactory
+            .newInstance(InetSocketAddress.createUnresolved("localhost", 8888));
 
-            @Override
-            public int port() {
-                return 8888;
-            }
-        });
+        TestService instance = TestService.getInstance(staticListFactory);
 
         Observable
-            .range(0, 100)
+            .range(0, 100_000)
             .flatMap(i -> {
                 System.out.println("sending " + i);
                 TestMessageRequest testMessageRequest = new TestMessageRequest();

@@ -3,6 +3,11 @@ package laser.raptor.test;
 
 import laser.raptor.core.server.LaserRaptorServerFunctionMetadata;
 import laser.raptor.core.server.server_functions.RequestResponseServerFunction;
+import laser.raptor.core.server.server_functions.FireAndForgetServerFunction;
+import laser.raptor.core.server.server_functions.SubscribeServerFunction;
+import laser.raptor.core.server.server_functions.RequestNServerFunction;
+import laser.raptor.core.server.server_functions.ChannelServerFunction;
+import laser.raptor.core.server.NotImplementedException;
 import rx.Observable;
 
 @LaserRaptorServerFunctionMetadata(
@@ -15,13 +20,7 @@ import rx.Observable;
 public class TestService_foo implements RequestResponseServerFunction<TestMessageRequest, TestMessageResponse> {
     @Override
     public Observable<TestMessageResponse> apply(Observable<TestMessageRequest> testMessageRequestObservable) {
-        return testMessageRequestObservable
-            .map(testMessageRequest -> {
-                String aString = testMessageRequest.getAString();
-                TestMessageResponse response = new TestMessageResponse();
-                response.setAString("A new string => " + aString);
-                return response;
-            });
+        throw new NotImplementedException();
     }
 }
 

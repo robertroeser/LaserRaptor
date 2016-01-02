@@ -30,10 +30,10 @@ dependencies {
 }
 
 
-task generateServerCode(type: JavaExec) {
+task generateServerCode(type: JavaExec, dependsOn: 'classes') {
     classpath = buildscript.configurations.classpath
 
-    main 'laser.raptor.LaserRaptor'
+    main = 'laser.raptor.LaserRaptor'
 
     args = [
             "-i ${rootDir}/java-generated-example/src/main/resources/simpleMessage.lr",
@@ -44,7 +44,7 @@ task generateServerCode(type: JavaExec) {
 task generateClientCode(type: JavaExec) {
     classpath = buildscript.configurations.classpath
 
-    main 'laser.raptor.LaserRaptor'
+    main = 'laser.raptor.LaserRaptor'
 
     args = [
             "-i ${rootDir}/java-generated-example/src/main/resources/simpleMessage.lr",

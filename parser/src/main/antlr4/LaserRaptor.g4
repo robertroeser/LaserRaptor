@@ -27,6 +27,7 @@ messageBodyDeclaration
     : ';'
     | fieldDeclaration
     | messageDeclaration
+    | enumDeclaration
     ;
 
 fieldDeclaration
@@ -50,6 +51,13 @@ messageType
     | 'map'
     | 'binary'
     ;
+
+enumDeclaration
+    : 'enum' Identifier enumBody
+    ;
+
+enumBody : '{' Identifier (',' Identifier)* '}'
+         ;
 
 serviceDeclaration
     :   'service' Identifier

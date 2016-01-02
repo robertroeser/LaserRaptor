@@ -41,6 +41,8 @@ public class LaserRaptor {
         Options options = new Options();
 
         options.addOption("i", "input", true, "Laser Raptor idl input file");
+        options.addOption("l", "language", true, "Language to generate source in");
+        options.addOption("a", "aeron", false, "Indicates wither or not to generate the source using Aeron or not");
         options.addOption("s", "server", false, "Indicates wither Laser Raptor is generating client or server code");
         options.addOption("o", "output", true, "Generator source output location");
         options.addOption("h", "help", false, "Prints this help message");
@@ -61,11 +63,20 @@ public class LaserRaptor {
             System.exit(-1);
         }
 
+        // TODO remove when support is added....
+        if (cmd.hasOption("a")) {
+            System.out.println("Ignoring - aeron not supported yet");
+        }
+
+        if (cmd.hasOption("l")) {
+            System.out.println("Ignoring - only java supported right now");
+        }
+
         String input = cmd.getOptionValue("i");
         String output = cmd.getOptionValue("o");
-        boolean client = cmd.hasOption("c");
+        boolean server = cmd.hasOption("s");
 
-        LaserRaptor laserRaptor = new LaserRaptor(input, output, client);
+        LaserRaptor laserRaptor = new LaserRaptor(input, output, server);
         laserRaptor.generate();
     }
 

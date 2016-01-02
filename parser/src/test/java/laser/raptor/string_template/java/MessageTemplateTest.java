@@ -11,6 +11,18 @@ public class MessageTemplateTest {
     }
 
     @Test
+    public void testRenderEnum() throws Exception {
+        String enumsTest = MessageTemplate
+            .newMessageTemplate()
+            .addEnum("one", "ONE, TWO, THREE")
+            .addEnum("two", "ONE, TWO, THREE, FOUR")
+            .renderEnums();
+
+        assertNotNull(enumsTest);
+        System.out.println(enumsTest);
+    }
+
+    @Test
     public void testRenderFields() throws Exception {
         String fieldsTest = MessageTemplate
                 .newMessageTemplate()
@@ -65,11 +77,16 @@ public class MessageTemplateTest {
                 .addField(MessageTemplate.MessageFieldTypes.LIST, "aList")
                 .addField(MessageTemplate.MessageFieldTypes.SHORT, "aShort")
                 .addField(MessageTemplate.MessageFieldTypes.MAP, "aMap")
+                .addField(MessageTemplate.MessageFieldTypes.STRING, "aString")
+                .addField(MessageTemplate.MessageFieldTypes.INT, "aInt")
+                .addField(MessageTemplate.MessageFieldTypes.LONG, "aLong")
+                .addField(MessageTemplate.MessageFieldTypes.FLOAT, "aFloat")
                 .addField("laser.raptor.test.Foo", "aFooToPitty")
+                .addEnum("one", "ONE, TWO, THREE")
+                .addEnum("two", "ONE, TWO, THREE, FOUR")
                 .render();
 
         assertNotNull(lasorRaptorTest);
         System.out.println(lasorRaptorTest);
     }
-
 }
