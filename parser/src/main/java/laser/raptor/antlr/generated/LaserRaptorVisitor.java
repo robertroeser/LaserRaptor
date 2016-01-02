@@ -14,13 +14,6 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface LaserRaptorVisitor<T> extends ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by {@link LaserRaptorParser#serviceBody}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitServiceBody(@NotNull LaserRaptorParser.ServiceBodyContext ctx);
-
-	/**
 	 * Visit a parse tree produced by {@link LaserRaptorParser#laserRaptor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -35,25 +28,11 @@ public interface LaserRaptorVisitor<T> extends ParseTreeVisitor<T> {
 	T visitMessageDeclaration(@NotNull LaserRaptorParser.MessageDeclarationContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link LaserRaptorParser#namespaceDeclaration}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNamespaceDeclaration(@NotNull LaserRaptorParser.NamespaceDeclarationContext ctx);
-
-	/**
 	 * Visit a parse tree produced by {@link LaserRaptorParser#messageBody}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitMessageBody(@NotNull LaserRaptorParser.MessageBodyContext ctx);
-
-	/**
-	 * Visit a parse tree produced by {@link LaserRaptorParser#messageType}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMessageType(@NotNull LaserRaptorParser.MessageTypeContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link LaserRaptorParser#messageBodyDeclaration}.
@@ -70,18 +49,53 @@ public interface LaserRaptorVisitor<T> extends ParseTreeVisitor<T> {
 	T visitQualifiedName(@NotNull LaserRaptorParser.QualifiedNameContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link LaserRaptorParser#serviceBodyDeclaration}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitServiceBodyDeclaration(@NotNull LaserRaptorParser.ServiceBodyDeclarationContext ctx);
-
-	/**
 	 * Visit a parse tree produced by {@link LaserRaptorParser#fieldDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitFieldDeclaration(@NotNull LaserRaptorParser.FieldDeclarationContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link LaserRaptorParser#enumBody}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEnumBody(@NotNull LaserRaptorParser.EnumBodyContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link LaserRaptorParser#type}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitType(@NotNull LaserRaptorParser.TypeContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link LaserRaptorParser#serviceBody}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitServiceBody(@NotNull LaserRaptorParser.ServiceBodyContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link LaserRaptorParser#namespaceDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNamespaceDeclaration(@NotNull LaserRaptorParser.NamespaceDeclarationContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link LaserRaptorParser#messageType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMessageType(@NotNull LaserRaptorParser.MessageTypeContext ctx);
+
+	/**
+	 * Visit a parse tree produced by {@link LaserRaptorParser#serviceBodyDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitServiceBodyDeclaration(@NotNull LaserRaptorParser.ServiceBodyDeclarationContext ctx);
 
 	/**
 	 * Visit a parse tree produced by {@link LaserRaptorParser#serviceDeclaration}.
@@ -91,9 +105,9 @@ public interface LaserRaptorVisitor<T> extends ParseTreeVisitor<T> {
 	T visitServiceDeclaration(@NotNull LaserRaptorParser.ServiceDeclarationContext ctx);
 
 	/**
-	 * Visit a parse tree produced by {@link LaserRaptorParser#type}.
+	 * Visit a parse tree produced by {@link LaserRaptorParser#enumDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitType(@NotNull LaserRaptorParser.TypeContext ctx);
+	T visitEnumDeclaration(@NotNull LaserRaptorParser.EnumDeclarationContext ctx);
 }

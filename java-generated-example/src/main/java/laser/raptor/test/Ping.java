@@ -14,7 +14,7 @@ public class Ping {
         TestService instance = TestService.getInstance(staticListFactory);
 
         Observable
-            .range(0, 100)
+            .range(0, 100_000)
             .flatMap(i -> {
                 System.out.println("sending " + i);
                 TestMessageRequest testMessageRequest = new TestMessageRequest();

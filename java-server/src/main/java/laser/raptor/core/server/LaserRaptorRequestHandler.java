@@ -139,7 +139,11 @@ public class LaserRaptorRequestHandler extends RequestHandler {
 
     @Override
     public Publisher<Payload> handleChannel(Publisher<Payload> inputs) {
-        throw new UnsupportedOperationException("channel not supported yet");
+        Observable<Payload> handleChannel = RxReactiveStreams
+            .toObservable(inputs)
+            .flatMap(payload -> RxReactiveStreams.toObservable(handle(payload, InteractionModel.CHANNEL)));
+
+        return RxReactiveStreams.toPublisher(handleChannel);
     }
 
     @Override

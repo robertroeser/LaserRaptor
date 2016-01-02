@@ -1,14 +1,21 @@
 
-message(generated_date, laser_raptor_version, package_name, class_name, fields, setters, getters) ::= <<
+message(generated_date, laser_raptor_version, package_name, class_name, enums, fields, setters, getters) ::= <<
 // GENERATED ON <generated_date> BY LASER RAPTOR VERSION <laser_raptor_version>
 package <package_name>;
 
 public class <class_name> {
+    <enums>
     <fields>
     public <class_name>() {}
     <setters>
     <getters>
 }
+
+>>
+
+enum(name, literals) ::= <<
+public enum <name> { <literals> }
+
 >>
 
 fields(fieldMap) ::= <<

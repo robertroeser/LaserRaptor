@@ -74,9 +74,9 @@ public class LaserRaptor {
 
         String input = cmd.getOptionValue("i");
         String output = cmd.getOptionValue("o");
-        boolean client = cmd.hasOption("c");
+        boolean server = cmd.hasOption("s");
 
-        LaserRaptor laserRaptor = new LaserRaptor(input, output, client);
+        LaserRaptor laserRaptor = new LaserRaptor(input, output, server);
         laserRaptor.generate();
     }
 

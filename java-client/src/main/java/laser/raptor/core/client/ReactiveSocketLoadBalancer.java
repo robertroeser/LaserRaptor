@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-class ReactiveSocketLoadBalancer {
+public class ReactiveSocketLoadBalancer {
 
     private SocketAddressFactory socketAddressFactory;
 

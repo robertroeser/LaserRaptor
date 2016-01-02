@@ -8,6 +8,7 @@ import laser.raptor.core.server.server_functions.FireAndForgetServerFunction;
 import laser.raptor.core.server.server_functions.SubscribeServerFunction;
 import laser.raptor.core.server.server_functions.RequestNServerFunction;
 import laser.raptor.core.server.server_functions.ChannelServerFunction;
+import laser.raptor.core.server.NotImplementedException;
 import rx.Observable;
 
 <class_body>
@@ -25,7 +26,7 @@ fire(hash, method_id, request_type, service_name, class_name, service_id, reques
 public class <service_name>_<class_name> implements FireAndForgetServerFunction\<<request_type>\> {
     @Override
     public Observable\<Void\> apply(Observable\<<request_type>\> <request_type_name>) {
-        throw new UnsupportedOperationException();
+        throw new NotImplementedException();
     }
 }
 
@@ -42,7 +43,7 @@ request(hash, method_id, request_type, response_type, service_name, class_name, 
 public class <service_name>_<class_name> implements RequestResponseServerFunction\<<request_type>, <response_type>\> {
     @Override
     public Observable\<<response_type>\> apply(Observable\<<request_type>\> <request_type_name>) {
-        throw new UnsupportedOperationException();
+        throw new NotImplementedException();
     }
 }
 
@@ -59,7 +60,7 @@ requestN(hash, method_id, request_type, response_type, service_name, class_name,
   public class <service_name>_<class_name> implements RequestNServerFunction\<<request_type>, <response_type>\> {
       @Override
       public Observable\<<response_type>\> apply(Observable\<<request_type>\> <request_type_name>) {
-          throw new UnsupportedOperationException();
+          throw new NotImplementedException();
       }
   }
 
@@ -76,7 +77,7 @@ subscription(hash, method_id, request_type, response_type, service_name, class_n
   public class <service_name>_<class_name> implements SubscribeServerFunction\<<request_type>, <response_type>\> {
       @Override
       public Observable\<<response_type>\> apply(Observable\<<request_type>\> <request_type_name>) {
-          throw new UnsupportedOperationException();
+          throw new NotImplementedException();
       }
   }
 
@@ -93,7 +94,7 @@ channel(hash, method_id, request_type, response_type, service_name, class_name, 
   public class <service_name>_<class_name> implements ChannelServerFunction\<<request_type>, <response_type>\> {
       @Override
       public Observable\<<response_type>\> apply(Observable\<<request_type>\> <request_type_name>) {
-          throw new UnsupportedOperationException();
+          throw new NotImplementedException();
       }
   }
 

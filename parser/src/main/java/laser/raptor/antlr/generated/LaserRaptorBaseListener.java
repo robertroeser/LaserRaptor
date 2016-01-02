@@ -19,19 +19,6 @@ public class LaserRaptorBaseListener implements LaserRaptorListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterServiceBody(@NotNull LaserRaptorParser.ServiceBodyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitServiceBody(@NotNull LaserRaptorParser.ServiceBodyContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterLaserRaptor(@NotNull LaserRaptorParser.LaserRaptorContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -58,19 +45,6 @@ public class LaserRaptorBaseListener implements LaserRaptorListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNamespaceDeclaration(@NotNull LaserRaptorParser.NamespaceDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNamespaceDeclaration(@NotNull LaserRaptorParser.NamespaceDeclarationContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterMessageBody(@NotNull LaserRaptorParser.MessageBodyContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -78,19 +52,6 @@ public class LaserRaptorBaseListener implements LaserRaptorListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMessageBody(@NotNull LaserRaptorParser.MessageBodyContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterMessageType(@NotNull LaserRaptorParser.MessageTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitMessageType(@NotNull LaserRaptorParser.MessageTypeContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -123,19 +84,6 @@ public class LaserRaptorBaseListener implements LaserRaptorListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterServiceBodyDeclaration(@NotNull LaserRaptorParser.ServiceBodyDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitServiceBodyDeclaration(@NotNull LaserRaptorParser.ServiceBodyDeclarationContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterFieldDeclaration(@NotNull LaserRaptorParser.FieldDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -143,6 +91,84 @@ public class LaserRaptorBaseListener implements LaserRaptorListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFieldDeclaration(@NotNull LaserRaptorParser.FieldDeclarationContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterEnumBody(@NotNull LaserRaptorParser.EnumBodyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEnumBody(@NotNull LaserRaptorParser.EnumBodyContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterType(@NotNull LaserRaptorParser.TypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitType(@NotNull LaserRaptorParser.TypeContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterServiceBody(@NotNull LaserRaptorParser.ServiceBodyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitServiceBody(@NotNull LaserRaptorParser.ServiceBodyContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNamespaceDeclaration(@NotNull LaserRaptorParser.NamespaceDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNamespaceDeclaration(@NotNull LaserRaptorParser.NamespaceDeclarationContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMessageType(@NotNull LaserRaptorParser.MessageTypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMessageType(@NotNull LaserRaptorParser.MessageTypeContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterServiceBodyDeclaration(@NotNull LaserRaptorParser.ServiceBodyDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitServiceBodyDeclaration(@NotNull LaserRaptorParser.ServiceBodyDeclarationContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -162,13 +188,13 @@ public class LaserRaptorBaseListener implements LaserRaptorListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterType(@NotNull LaserRaptorParser.TypeContext ctx) { }
+	@Override public void enterEnumDeclaration(@NotNull LaserRaptorParser.EnumDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitType(@NotNull LaserRaptorParser.TypeContext ctx) { }
+	@Override public void exitEnumDeclaration(@NotNull LaserRaptorParser.EnumDeclarationContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

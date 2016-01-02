@@ -15,8 +15,8 @@ import java.nio.ByteBuffer;
 public class <class_name> extends LaserRaptorClientService {
     protected <class_name>() {}
 
-    protected <class_name>(String host, int port) {
-        super(host, port);
+    protected <class_name>(ReactiveSocketLoadBalancer reactiveSocketLoadBalancer) {
+        super(reactiveSocketLoadBalancer);
     }
 
     <methods>
@@ -24,7 +24,7 @@ public class <class_name> extends LaserRaptorClientService {
     public static <class_name> getInstance(
         ReactiveSocketLoadBalancer.SocketAddressFactory socketAddressFactory,
         ReactiveSocketLoadBalancer.ClosedConnectionsProvider closedConnectionsProvider) {
-            return LaserRaptorServiceFactory
+            return LaserRaptorClientServiceFactory
                 .getLaserRaptorService(
                     <class_name>.class,
                     socketAddressFactory,
@@ -34,7 +34,7 @@ public class <class_name> extends LaserRaptorClientService {
      }
 
     public static <class_name> getInstance(ReactiveSocketLoadBalancer.SocketAddressFactory socketAddressFactory) {
-        return LaserRaptorServiceFactory
+        return LaserRaptorClientServiceFactory
             .getLaserRaptorService(
                 <class_name>.class,
                 socketAddressFactory,
@@ -57,14 +57,14 @@ fire(methodName, requestType, requestName, serviceId, methodId) ::= <<
 
 request(methodName, requestType, requestName, responseType, serviceId, methodId) ::= <<
     public Observable\<<responseType>\> <methodName>(<requestType> <requestName>) {
-        Observable<Payload> defer = Observable.<Payload>defer(() -> {
+        Observable\<Payload\> defer = Observable.\<Payload\>defer(() -> {
             ByteBuffer requestBuffer = JacksonUtil.writeValueAsByteBuffer(<requestName>);
             return handleRequestResponse(<serviceId>, <methodId>, requestBuffer);
         });
 
         return defer.map(payload -> {
             ByteBuffer responseBuffer = payload.getData();
-            JacksonUtil.readValueFromByteBuffer(responseBuffer, <responseType>.class);
+            return JacksonUtil.readValueFromByteBuffer(responseBuffer, <responseType>.class);
         });
     }
 
@@ -72,14 +72,14 @@ request(methodName, requestType, requestName, responseType, serviceId, methodId)
 
 requestN(methodName, requestType, requestName, responseType, serviceId, methodId) ::= <<
     public Observable\<<responseType>\> <methodName>(<requestType> <requestName>) {
-        Observable<Payload> defer = Observable.<Payload>defer(() -> {
+        Observable\<Payload\> defer = Observable.\<Payload\>defer(() -> {
             ByteBuffer requestBuffer = JacksonUtil.writeValueAsByteBuffer(<requestName>);
             return handleRequestStream(<serviceId>, <methodId>, requestBuffer);
         });
 
         return defer.map(payload -> {
             ByteBuffer responseBuffer = payload.getData();
-            JacksonUtil.readValueFromByteBuffer(responseBuffer, <responseType>.class);
+            return JacksonUtil.readValueFromByteBuffer(responseBuffer, <responseType>.class);
         });
     }
 
@@ -87,14 +87,14 @@ requestN(methodName, requestType, requestName, responseType, serviceId, methodId
 
 subscription(methodName, requestType, requestName, responseType, serviceId, methodId) ::= <<
     public Observable\<<responseType>\> <methodName>(<requestType> <requestName>) {
-        Observable<Payload> defer = Observable.<Payload>defer(() -> {
+        Observable\<Payload\> defer = Observable.\<Payload\>defer(() -> {
             ByteBuffer requestBuffer = JacksonUtil.writeValueAsByteBuffer(<requestName>);
             return handleSubscription(<serviceId>, <methodId>, requestBuffer);
         });
 
         return defer.map(payload -> {
             ByteBuffer responseBuffer = payload.getData();
-            JacksonUtil.readValueFromByteBuffer(responseBuffer, <responseType>.class);
+            return JacksonUtil.readValueFromByteBuffer(responseBuffer, <responseType>.class);
         });
 
     }
@@ -103,7 +103,7 @@ subscription(methodName, requestType, requestName, responseType, serviceId, meth
 
 channel(methodName, requestType, requestName, responseType, serviceId, methodId) ::= <<
     public Observable\<<responseType>\> <methodName>(Observable\<<requestType>\> <requestName>) {
-        Observable<Payload> defer = Observable.<Payload>defer(() -> {
+        Observable\<Payload\> defer = Observable.\<Payload\>defer(() -> {
             ByteBuffer requestBuffer = JacksonUtil.writeValueAsByteBuffer(<requestName>);
             return handleChannel(<serviceId>, <methodId>, requestBuffer);
         });
