@@ -1,0 +1,31 @@
+buildscript {
+    repositories {
+        maven {
+            name 'JFrog OSS snapshot repo'
+            url  'https://oss.jfrog.org/oss-snapshot-local/'
+        }
+        jcenter()
+        mavenLocal()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath project (':parser')
+    }
+}
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile project (':java-client')
+    compile 'com.netflix.eureka:eureka-client:1.3.5'
+    compile 'org.slf4j:slf4j-simple:1.7.13'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile 'org.slf4j:slf4j-simple:1.7.13'
+}

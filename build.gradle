@@ -43,6 +43,9 @@ subprojects {
         compile 'com.fasterxml.jackson.module:jackson-module-afterburner:latest.release'
         compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:latest.release'
 
+        // HdrHistogram
+        compile 'org.hdrhistogram:HdrHistogram:2.1.8'
+
         testCompile 'junit:junit:4.12'
         testCompile 'org.mockito:mockito-all:1.10.19'
         testCompile 'org.slf4j:slf4j-simple:1.7.13'
@@ -59,7 +62,6 @@ project(':java-client') {
         compile project(':java-core')
     }
 }
-
 
 project(':java-server') {
     dependencies {

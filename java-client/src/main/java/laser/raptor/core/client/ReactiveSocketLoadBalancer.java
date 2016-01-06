@@ -172,5 +172,21 @@ public class ReactiveSocketLoadBalancer {
         }
     };
 
+
+    public final static StatsSelector BEST_P90_LATENCY_SELECTOR = (Stats left, Stats right) -> {
+        if (left == right) {
+            return left;
+        }
+
+        double leftTime = left.getP99TimeNanos();
+        double rightTime = right.getP99TimeNanos();
+
+        if (leftTime <= rightTime) {
+            return left;
+        } else {
+            return right;
+        }
+    };
+
     public final static NumberGenerator NUMBER_GENERATOR = () -> Math.abs(XORShiftRandom.getInstance().randomInt());
 }

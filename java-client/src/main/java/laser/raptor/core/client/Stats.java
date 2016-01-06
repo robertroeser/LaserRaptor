@@ -12,5 +12,11 @@ public interface Stats {
 
     double getAverageTimeNanos();
 
+    long getP99TimeNanos();
 
+    long getP99_9TimeNanos();
+
+    long getP75TimeNanos();
+
+    long getP99_99TImeNanos();
 }

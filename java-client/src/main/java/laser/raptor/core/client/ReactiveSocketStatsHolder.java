@@ -1,8 +1,10 @@
 package laser.raptor.core.client;
 
 import io.reactivesocket.ReactiveSocket;
+import org.HdrHistogram.Histogram;
 import uk.co.real_logic.agrona.LangUtil;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -13,14 +15,15 @@ class ReactiveSocketStatsHolder implements Stats {
     AtomicLong outstandingRequests;
     AtomicLong totalFailures;
     AtomicLong totalRequests;
-    AtomicLong totalNanos;
+
+    Histogram histogram;
 
     public ReactiveSocketStatsHolder(ReactiveSocket reactiveSocket) {
         this.reactiveSocket = reactiveSocket;
         outstandingRequests = new AtomicLong();
         totalRequests = new AtomicLong();
         totalFailures = new AtomicLong();
-        totalNanos = new AtomicLong();
+        this.histogram = new Histogram(TimeUnit.MINUTES.toNanos(1), 2);
     }
 
     public long getOutstandingRequests() {
@@ -32,7 +35,27 @@ class ReactiveSocketStatsHolder implements Stats {
     }
 
     public double getAverageTimeNanos() {
-        return totalNanos.get() / totalRequests.get();
+        return histogram.getMean();
+    }
+
+    @Override
+    public long getP99TimeNanos() {
+        return histogram.getValueAtPercentile(0.99);
+    }
+
+    @Override
+    public long getP99_9TimeNanos() {
+        return histogram.getValueAtPercentile(0.99_9);
+    }
+
+    @Override
+    public long getP75TimeNanos() {
+        return histogram.getValueAtPercentile(0.75);
+    }
+
+    @Override
+    public long getP99_99TImeNanos() {
+        return histogram.getValueAtPercentile(0.99_99);
     }
 
     @Override
@@ -49,12 +72,12 @@ class ReactiveSocketStatsHolder implements Stats {
     public void recordFailure(long startTime) {
         outstandingRequests.decrementAndGet();
         totalFailures.incrementAndGet();
-        totalNanos.addAndGet(System.nanoTime() - startTime);
+        histogram.recordValue(System.nanoTime() - startTime);
     }
 
     public void recordSuccess(long startTime) {
         outstandingRequests.decrementAndGet();
-        totalNanos.addAndGet(System.nanoTime() - startTime);
+        histogram.recordValue(System.nanoTime() - startTime);
     }
 
     /**
@@ -79,7 +102,6 @@ class ReactiveSocketStatsHolder implements Stats {
             ", outstandingRequests=" + outstandingRequests +
             ", totalFailures=" + totalFailures +
             ", totalRequests=" + totalRequests +
-            ", totalNanos=" + totalNanos +
             '}';
     }
 }

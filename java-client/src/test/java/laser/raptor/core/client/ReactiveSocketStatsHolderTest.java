@@ -19,7 +19,7 @@ public class ReactiveSocketStatsHolderTest {
         reactiveSocketStatsHolder.recordSuccess(start);
 
         Assert.assertEquals(0, reactiveSocketStatsHolder.outstandingRequests.get());
-        Assert.assertNotEquals(0, reactiveSocketStatsHolder.totalNanos.get());
+        Assert.assertNotEquals(0, reactiveSocketStatsHolder.getAverageTimeNanos());
     }
 
     @Test
@@ -35,6 +35,6 @@ public class ReactiveSocketStatsHolderTest {
 
         Assert.assertEquals(0, reactiveSocketStatsHolder.outstandingRequests.get());
         Assert.assertEquals(1, reactiveSocketStatsHolder.totalFailures.get());
-        Assert.assertNotEquals(0, reactiveSocketStatsHolder.totalNanos.get());
+        Assert.assertNotEquals(0, reactiveSocketStatsHolder.getAverageTimeNanos());
     }
 }
