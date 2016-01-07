@@ -142,8 +142,8 @@ public class ReactiveSocketLoadBalancer {
         }
     }
 
-    private static final List<SocketAddress> emptyList = new ArrayList<>();
-    public final static ClosedConnectionsProvider NO_CHANGE_PROVIDER = () -> Observable.just(emptyList);
+    private static final List<SocketAddress> EMPTY_LIST = new ArrayList<>();
+    public final static ClosedConnectionsProvider NO_CHANGE_PROVIDER = () -> Observable.just(EMPTY_LIST);
 
     public final static ReactiveSocketFactory WEB_SOCKET_FACTORY = (socketAddress) -> {
             Observable<WebSocketConnection> wsConnection = HttpClient.newClient(socketAddress)
