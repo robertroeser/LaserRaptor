@@ -107,8 +107,6 @@ public class ReactiveSocketLoadBalancerTest {
         Assert.assertEquals("2", statsHolder2.getReactiveSocket(), three);
         Assert.assertEquals("3", statsHolder3.getReactiveSocket(), two);
 
-        Mockito.verify(reactiveSocketFactory, Mockito.times(3));
-
     }
 
     @Test
@@ -158,8 +156,6 @@ public class ReactiveSocketLoadBalancerTest {
         testSubscriber.awaitTerminalEvent(5, TimeUnit.SECONDS);
         testSubscriber.assertNoErrors();
         testSubscriber.assertCompleted();
-
-        Mockito.verify(reactiveSocketFactory, Mockito.atLeast(3));
 
         reactiveSocketLoadBalancer
             .reactiveSocketStatsHolders
