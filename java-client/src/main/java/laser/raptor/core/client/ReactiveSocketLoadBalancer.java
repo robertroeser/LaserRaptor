@@ -187,8 +187,8 @@ public class ReactiveSocketLoadBalancer {
             return left;
         }
 
-        double leftTime = left.getP99TimeNanos();
-        double rightTime = right.getP99TimeNanos();
+        double leftTime = left.getP90TimeNanos();
+        double rightTime = right.getP90TimeNanos();
 
         if (leftTime <= rightTime) {
             return left;

@@ -39,8 +39,8 @@ class ReactiveSocketStatsHolder implements Stats {
     }
 
     @Override
-    public long getP99TimeNanos() {
-        return histogram.getValueAtPercentile(0.99);
+    public long getP90TimeNanos() {
+        return histogram.getValueAtPercentile(0.90);
     }
 
     @Override
