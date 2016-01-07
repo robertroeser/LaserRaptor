@@ -9,9 +9,9 @@ import rx.Observable;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -25,7 +25,9 @@ public class EurekaSocketAddressFactory implements ReactiveSocketLoadBalancer.So
 
     final private DiscoveryClient client;
 
-    final ArrayList<SocketAddress> pool;
+    final List<SocketAddress> pool;
+
+    final List<SocketAddress> prunedList;
 
     final private int poolSize;
 
@@ -47,7 +49,8 @@ public class EurekaSocketAddressFactory implements ReactiveSocketLoadBalancer.So
         this.poolSize = poolSize;
         this.vip = vip;
         this.secure = secure;
-        this.pool = new ArrayList<>();
+        this.pool = new CopyOnWriteArrayList<>();
+        this.prunedList = new CopyOnWriteArrayList<>();
         this.reentrantLock = new ReentrantLock();
     }
 
@@ -64,7 +67,7 @@ public class EurekaSocketAddressFactory implements ReactiveSocketLoadBalancer.So
         }
 
         return Observable
-            .<List<SocketAddress>>just(pool)
+            .just(pool)
             .finallyDo(() -> {
                 if (System.nanoTime() - lastUpdate > TIMEOUT) {
                     try {
@@ -83,48 +86,45 @@ public class EurekaSocketAddressFactory implements ReactiveSocketLoadBalancer.So
             });
     }
 
-    long foundValue() {
-        int size = pool.size();
-        int bufferSize = (pool.size() < 8 || poolSize < 8) ? 8 : pool.size();
-
-        ByteBuffer byteBuffer = ByteBuffer.allocate(bufferSize);
-        for (int i = 0; i < size; i++) {
-            byteBuffer.put((byte) 1);
-        }
-
-        return byteBuffer.getLong(0);
+    /**
+     * Gets an implementation of the {@link laser.raptor.core.client.ReactiveSocketLoadBalancer.ClosedConnectionsProvider}
+     * that can be provided to the {@link ReactiveSocketLoadBalancer} to clean up missing connections
+     * @return an Observable of list connections that should be closed
+     */
+    public ReactiveSocketLoadBalancer.ClosedConnectionsProvider getClosedConnectionProvider() {
+        return () -> Observable.just(prunedList).finallyDo(prunedList::clear);
     }
 
     void pruneList(List<InstanceInfo> instancesByVipAddress) {
-        final long foundValue = foundValue();
-        ByteBuffer buffer = ByteBuffer.allocate(pool.size());
+        List<InetSocketAddress> currentPrunedList = new ArrayList<>(pool.size());
+        pool
+            .forEach(socketAddress -> {
+                InetSocketAddress address = (InetSocketAddress) socketAddress;
 
-        for (InstanceInfo instanceInfo : instancesByVipAddress) {
-            InetSocketAddress address = instanceInfoToSocketAddress(instanceInfo);
-            int index = pool.indexOf(address);
+                boolean found = false;
+                for (InstanceInfo instanceInfo : instancesByVipAddress) {
+                    InetSocketAddress current = instanceInfoToSocketAddress(instanceInfo);
+                    found = current.equals(address);
 
-            if (index > -1) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("removing socket {}", pool.get(index));
+                    if (found) {
+                        break;
+                    }
                 }
 
-                buffer.put(index, (byte) 1);
-            }
+                if (!found) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Removing socket {}", address);
+                    }
 
-            if (buffer.getLong(0) == foundValue) {
-                break;
-            }
+                    currentPrunedList.add(address);
+                }
+
+            });
+
+        if (!currentPrunedList.isEmpty()) {
+            prunedList.addAll(currentPrunedList);
+            pool.removeAll(currentPrunedList);
         }
-
-        List<SocketAddress> removed = new ArrayList<>();
-        for (int i = 0; i < buffer.capacity(); i++) {
-            if (buffer.get(i) == 1) {
-                SocketAddress socketAddress = pool.get(i);
-                removed.add(socketAddress);
-            }
-        }
-
-        removed.forEach(pool::remove);
     }
 
     InetSocketAddress instanceInfoToSocketAddress(InstanceInfo instanceInfo) {
@@ -143,6 +143,10 @@ public class EurekaSocketAddressFactory implements ReactiveSocketLoadBalancer.So
             InstanceInfo instanceInfo = instancesByVipAddress.get(count);
             InetSocketAddress address = instanceInfoToSocketAddress(instanceInfo);
             if (!pool.contains(address)) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Address {} not found in pool - adding", address);
+                }
+
                 pool.add(address);
                 count++;
             }

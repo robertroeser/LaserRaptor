@@ -8,6 +8,8 @@ import io.reactivex.netty.protocol.http.client.HttpClient;
 import io.reactivex.netty.protocol.http.ws.WebSocketConnection;
 import io.reactivex.netty.protocol.http.ws.client.WebSocketResponse;
 import org.reactivestreams.Publisher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rx.Observable;
 import rx.RxReactiveStreams;
 import rx.functions.Func0;
@@ -21,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ReactiveSocketLoadBalancer {
+    private static final Logger logger = LoggerFactory.getLogger(ReactiveSocketLoadBalancer.class);
 
     private SocketAddressFactory socketAddressFactory;
 
@@ -87,22 +90,27 @@ public class ReactiveSocketLoadBalancer {
                 }
                 return reactiveSocketStatsHolder;
             })
-            .finallyDo(() -> {
-                List<SocketAddress> call = closedConnections.call();
-                if (call != null) {
-                    call.forEach(socketAddress -> {
-                        ReactiveSocketStatsHolder reactiveSocketStatsHolder = reactiveSocketStatsHolders.remove(socketAddress);
-                        reactiveSocketStatsHolder.close();
-                    });
-                }
-            });
+            .finallyDo(() ->
+                closedConnections
+                    .call()
+                    .subscribe(socketAddresses -> {
+                        socketAddresses.forEach(socketAddress -> {
+                            ReactiveSocketStatsHolder reactiveSocketStatsHolder = reactiveSocketStatsHolders.remove(socketAddress);
+                            try {
+                                reactiveSocketStatsHolder.close();
+                            } catch (Throwable t) {
+                                logger.debug("error close reactive socket connection", t);
+                            }
+                        });
+                    })
+            );
     }
 
     /*
      * Interfaces
      */
     public interface SocketAddressFactory extends  Func0<Observable<List<SocketAddress>>> {}
-    public interface ClosedConnectionsProvider extends Func0<List<SocketAddress>> {}
+    public interface ClosedConnectionsProvider extends Func0<Observable<List<SocketAddress>>> {}
     public interface ReactiveSocketFactory extends Func1<SocketAddress, ReactiveSocket> {}
     public interface StatsSelector extends Func2<Stats, Stats, Stats> {}
 
@@ -134,7 +142,8 @@ public class ReactiveSocketLoadBalancer {
         }
     }
 
-    public final static ClosedConnectionsProvider NO_CHANGE_PROVIDER = () -> null;
+    private static final List<SocketAddress> emptyList = new ArrayList<>();
+    public final static ClosedConnectionsProvider NO_CHANGE_PROVIDER = () -> Observable.just(emptyList);
 
     public final static ReactiveSocketFactory WEB_SOCKET_FACTORY = (socketAddress) -> {
             Observable<WebSocketConnection> wsConnection = HttpClient.newClient(socketAddress)

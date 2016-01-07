@@ -6,34 +6,14 @@ import com.netflix.discovery.DiscoveryClient;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
+import rx.Observable;
+import rx.observers.TestSubscriber;
 
 import java.net.SocketAddress;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class EurekaSocketAddressFactoryTest {
-    @Test
-    public void testFoundValueWithPoolSmallerThan8() {
-        testFoundValue(5, 20);
-    }
-
-    @Test
-    public void testFoundValueWithPoolSizeSmallerThan8() {
-        testFoundValue(5, 5);
-    }
-
-    @Test
-    public void testFoundValueWithPoolEqualTo8() {
-        testFoundValue(8, 8);
-    }
-
-    @Test
-    public void testFoundValueWithPoolGreaterThan8() {
-        testFoundValue(100, 200);
-    }
-
     @Test
     public void testPopulateEmptyPool() {
         testPopulateEmptyPool(8, 8, 8);
@@ -74,7 +54,7 @@ public class EurekaSocketAddressFactoryTest {
 
         eurekaSocketAddressFactory.populateList(instanceInfos);
 
-        ArrayList<SocketAddress> pool = eurekaSocketAddressFactory.pool;
+        List<SocketAddress> pool = eurekaSocketAddressFactory.pool;
 
         Assert.assertFalse(pool.isEmpty());
         Assert.assertEquals(expectedSize, pool.size());
@@ -83,7 +63,6 @@ public class EurekaSocketAddressFactoryTest {
 
         int oldSize = pool.size();
 
-        Collections.shuffle(instanceInfos);
         instanceInfos.remove(0);
         instanceInfos.remove(0);
         instanceInfos.remove(0);
@@ -91,6 +70,17 @@ public class EurekaSocketAddressFactoryTest {
         eurekaSocketAddressFactory.pruneList(instanceInfos);
 
         Assert.assertEquals(oldSize - 3, pool.size());
+
+        Observable<List<SocketAddress>> call = eurekaSocketAddressFactory.getClosedConnectionProvider().call();
+
+        TestSubscriber subscriber = new TestSubscriber();
+        call
+            .doOnNext(socketAddresses -> Assert.assertEquals(3, socketAddresses.size()))
+            .doOnError(Throwable::printStackTrace)
+            .subscribe(subscriber);
+
+        subscriber.assertNoErrors();
+        subscriber.assertCompleted();
     }
 
     public List<InstanceInfo> testPopulateEmptyPool(int poolSize, int numInstanceInfo, int expectedSize) {
@@ -110,7 +100,7 @@ public class EurekaSocketAddressFactoryTest {
 
         eurekaSocketAddressFactory.populateList(instanceInfos);
 
-        ArrayList<SocketAddress> pool = eurekaSocketAddressFactory.pool;
+        List<SocketAddress> pool = eurekaSocketAddressFactory.pool;
 
         Assert.assertFalse(pool.isEmpty());
         Assert.assertEquals(expectedSize, pool.size());
@@ -120,28 +110,33 @@ public class EurekaSocketAddressFactoryTest {
         return instanceInfos;
     }
 
-    public void testFoundValue(int size, int poolSize) {
-
-        int bufferSize = (size < 8 || poolSize < 8) ? 8 : size;
-
-        ByteBuffer byteBuffer = ByteBuffer.allocate(bufferSize);
-        for (int i = 0; i < size; i++) {
-            byteBuffer.put((byte) 1);
-        }
-
-        long expected = byteBuffer.getLong(0);
-        System.out.println("expected => " + expected);
+    @Test
+    public void testCall() {
+        int poolSize = 10;
+        int numInstanceInfo = 20;
+        int expectedSize = 10;
 
         DiscoveryClient client = Mockito.mock(DiscoveryClient.class);
-        EurekaSocketAddressFactory eurekaSocketAddressFactory = new EurekaSocketAddressFactory(client, "localhost", false, poolSize);
+        EurekaSocketAddressFactory eurekaSocketAddressFactory = new EurekaSocketAddressFactory(client, "test", false, poolSize);
 
-        for (int i = 0; i < size; i++) {
-            eurekaSocketAddressFactory.pool.add(Mockito.mock(SocketAddress.class));
+        List<InstanceInfo> instanceInfos = new ArrayList<>();
+
+        for (int i = 0; i < numInstanceInfo; i++) {
+            InstanceInfo instanceInfo = Mockito.mock(InstanceInfo.class);
+            Mockito.when(instanceInfo.getIPAddr()).thenReturn("192.168.1." + i);
+            Mockito.when(instanceInfo.getPort()).thenReturn(7001);
+            instanceInfos.add(instanceInfo);
         }
 
-        long foundValue = eurekaSocketAddressFactory.foundValue();
-        System.out.println("found    => " + foundValue);
+        Mockito.when(client.getInstancesByVipAddress(Mockito.anyString(), Mockito.anyBoolean())).thenReturn(instanceInfos);
 
-        Assert.assertEquals(foundValue, expected);
+        TestSubscriber subscriber = new TestSubscriber();
+        eurekaSocketAddressFactory
+            .call()
+            .doOnNext(socketAddresses -> Assert.assertEquals(expectedSize, socketAddresses.size()))
+            .doOnError(Throwable::printStackTrace)
+            .subscribe(subscriber);
+        subscriber.awaitTerminalEvent();
+        subscriber.assertNoErrors();
     }
 }
