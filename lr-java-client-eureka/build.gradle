@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    compile project (':java-client')
+    compile project (':lr-java-client')
     compile 'com.netflix.eureka:eureka-client:1.3.5'
 
     testCompile 'junit:junit:4.12'

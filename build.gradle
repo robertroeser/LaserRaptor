@@ -6,6 +6,7 @@ allprojects {
 subprojects {
     apply plugin: 'nebula.javadoc-jar'
     apply plugin: 'nebula.source-jar'
+    apply plugin: 'java'
 
     repositories {
         jcenter()

@@ -1,4 +1,4 @@
-// Generated from /Users/rroeser/projects/LaserRaptor/parser/src/main/antlr4/LaserRaptor.g4 by ANTLR 4.2.2
+// Generated from /Users/rroeser/projects/LaserRaptor/lr-parser/src/main/antlr4/LaserRaptor.g4 by ANTLR 4.2.2
 
 package laser.raptor.antlr.generated;
 
