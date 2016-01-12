@@ -9,9 +9,6 @@ buildscript {
         mavenCentral()
     }
 
-    dependencies {
-        classpath project (':parser')
-    }
 }
 
 apply plugin: 'java'
