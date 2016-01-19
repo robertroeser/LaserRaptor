@@ -25,7 +25,7 @@ public class ClientServiceTemplate extends JavaTemplate {
         methods = new ArrayList<>();
 
         stGroupDir.load();
-        String fileName  = stGroupDir.getFileName() + File.separator + "LaserRaptorClientService.stg";
+        String fileName  = "templates/java/LaserRaptorClientService.stg";
         laserRaptorClientService = new STGroupFile(fileName);
     }
 

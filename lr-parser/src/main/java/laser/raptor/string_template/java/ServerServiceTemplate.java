@@ -25,7 +25,7 @@ public class ServerServiceTemplate extends JavaTemplate {
         serverServiceModels = new ArrayList<>();
 
         stGroupDir.load();
-        String fileName = stGroupDir.getFileName() + File.separator + "LaserRaptorServerFunction.stg";
+        String fileName = "templates/java/LaserRaptorServerFunction.stg";
         serverServiceGroup = new STGroupFile(fileName);
 
     }

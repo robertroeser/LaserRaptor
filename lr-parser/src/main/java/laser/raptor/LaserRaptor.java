@@ -102,6 +102,7 @@ public class LaserRaptor {
         Map<String, ServerServiceTemplate> serverServiceTemplates = laserRaptorListener.getServerServiceTemplates();
 
         File outputDirectory = new File(output);
+        outputDirectory.mkdirs();
 
         if (!outputDirectory.exists()) {
             throw new IllegalStateException("No directory found named " + output);

@@ -28,7 +28,7 @@ public class MessageTemplate extends JavaTemplate {
         enums = new HashMap<>();
 
         stGroupDir.load();
-        String fileName = stGroupDir.getFileName() + File.separator + "Message.stg";
+        String fileName = "templates/java/Message.stg";
         messageGroup = new STGroupFile(fileName);
 
     }
