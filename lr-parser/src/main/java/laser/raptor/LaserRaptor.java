@@ -114,10 +114,11 @@ public class LaserRaptor {
             File packageDir = new File(outputDirectory, packageName);
             packageDir.mkdirs();
             String className = messageTemplate.getClassName() + ".java";
-            System.out.printf("Creating class named %s, in package %s", className, packageName);
+            System.out.printf("Creating class named %s, in package %s\n", className, packageName);
             String render = messageTemplate.render();
-            System.out.printf("Writing contents [%s]", render);
+            System.out.printf("Writing contents [%s]\n", render);
             File classFile = new File(packageDir, className);
+            classFile.createNewFile();
             FileWriter writer = new FileWriter(classFile);
             writer.append(render);
             writer.flush();
@@ -131,10 +132,11 @@ public class LaserRaptor {
                 File packageDir = new File(outputDirectory, packageName);
                 packageDir.mkdirs();
                 String className = clientServiceTemplate.getClassName() + ".java";
-                System.out.printf("Creating class named %s, in package %s", className, packageName);
+                System.out.printf("Creating class named %s, in package %s\n", className, packageName);
                 String render = clientServiceTemplate.render();
-                System.out.printf("Writing contents [%s]", render);
+                System.out.printf("Writing contents [%s]\n", render);
                 File classFile = new File(packageDir, className);
+                classFile.createNewFile();
                 FileWriter writer = new FileWriter(classFile);
                 writer.append(render);
                 writer.flush();
@@ -149,10 +151,11 @@ public class LaserRaptor {
 
                 for (ServerServiceTemplate.RenderedService renderedService : template.render()) {
                     String className = renderedService.getClassName() + ".java";
-                    System.out.printf("Creating class named %s, in package %s", className, packageName);
+                    System.out.printf("Creating class named %s, in package %s\n", className, packageName);
                     String source = renderedService.getSource();
-                    System.out.printf("Writing contents [%s]", source);
+                    System.out.printf("Writing contents [%s]\n", source);
                     File classFile = new File(packageDir, className);
+                    classFile.createNewFile();
                     FileWriter writer = new FileWriter(classFile);
                     writer.append(source);
                     writer.flush();
