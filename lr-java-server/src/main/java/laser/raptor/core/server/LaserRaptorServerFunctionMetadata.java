@@ -13,6 +13,8 @@ public @interface LaserRaptorServerFunctionMetadata {
     long hash();
     int serviceId();
     int methodId();
+    String serviceName();
+    String methodName();
     Class<? extends ServerFunction> serviceClass();
     Class<?> requestClass();
     Class<?> responseClass();

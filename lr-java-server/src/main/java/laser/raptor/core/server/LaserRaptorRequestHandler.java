@@ -2,6 +2,7 @@ package laser.raptor.core.server;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
+import com.google.inject.Inject;
 import com.gs.collections.impl.map.mutable.primitive.LongObjectHashMap;
 import io.reactivesocket.Payload;
 import io.reactivesocket.RequestHandler;
@@ -33,6 +34,37 @@ public class LaserRaptorRequestHandler extends RequestHandler {
     // Visible for Testing
     LongObjectHashMap<RequestHandlerMetadata> requestHandlerMetadata = new LongObjectHashMap<>();
 
+    /**
+     * This constructor is used by Guice to inject a set of already construct ServerFunctions into the handler.
+     *
+     * @param serverFunctions set of server functions to inject
+     */
+    @Inject
+    public LaserRaptorRequestHandler(Set<ServerFunction> serverFunctions) {
+        serverFunctions
+            .stream()
+            .forEach(serverFunction -> {
+                Class<? extends ServerFunction> serverFunctionClass = serverFunction.getClass();
+                LaserRaptorServerFunctionMetadata laserRaptorFunction = serverFunctionClass.getAnnotation(LaserRaptorServerFunctionMetadata.class);
+                RequestHandlerMetadata metadata =
+                    new RequestHandlerMetadata(
+                        laserRaptorFunction.methodId(),
+                        laserRaptorFunction.serviceName(),
+                        laserRaptorFunction.requestClass(),
+                        laserRaptorFunction.responseClass(),
+                        serverFunction);
+
+                requestHandlerMetadata.put(laserRaptorFunction.hash(), metadata);
+            });
+    }
+
+    /**
+     * Use this constructor if you don't use Guice. The constructor will can the class path and load the implementations
+     * you specify.
+     *
+     * @param servicesToLoad The services to load
+     * @param packages The packages to scan
+     */
     public LaserRaptorRequestHandler(Set<String> servicesToLoad, String... packages) {
         scanPackages(servicesToLoad, packages);
     }
@@ -52,6 +84,7 @@ public class LaserRaptorRequestHandler extends RequestHandler {
             LangUtil.rethrowUnchecked(e);
         }
     }
+
 
     protected void scanPackage(ClassPath classPath, Set<String> servicesToLoad, String p)  {
         ImmutableSet<ClassPath.ClassInfo> topLevelClassesRecursive =

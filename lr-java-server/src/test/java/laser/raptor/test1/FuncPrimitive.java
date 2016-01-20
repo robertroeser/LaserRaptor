@@ -6,6 +6,8 @@ import rx.Observable;
 
 @LaserRaptorServerFunctionMetadata(
     hash =  1288490189100L,
+    serviceName =  "TestService",
+    methodName =  "foo",
     methodId = 300,
     requestClass = Integer.class,
     responseClass = Integer.class,
