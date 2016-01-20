@@ -1,9 +1,11 @@
 package laser.raptor.laser.raptor.antlr;
 
+import junit.framework.Assert;
 import laser.raptor.antlr.generated.LaserRaptorLexer;
 import laser.raptor.antlr.generated.LaserRaptorParser;
 import laser.raptor.core.InteractionModel;
 import laser.raptor.string_template.java.ClientServiceTemplate;
+import laser.raptor.string_template.java.GuiceModuleTemplate;
 import laser.raptor.string_template.java.MessageTemplate;
 import laser.raptor.string_template.java.ServerServiceTemplate;
 import org.antlr.v4.runtime.ANTLRFileStream;
@@ -43,7 +45,7 @@ public class LaserRaptorListenerTest {
         ParserRuleContext laserRaptorContext = parser.laserRaptor();
         System.out.println(laserRaptorContext.toStringTree(parser));
 
-        LaserRaptorListener laserRaptorListener = new LaserRaptorListener();
+        LaserRaptorListener laserRaptorListener = new LaserRaptorListener(false);
 
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(laserRaptorListener, laserRaptorContext);
@@ -68,6 +70,31 @@ public class LaserRaptorListenerTest {
     }
 
     @Test
+    public void testShouldCreateGuiceModule() throws Exception {
+        URL systemResource =
+            ClassLoader.getSystemResource("simpleMessage.lr");
+        LaserRaptorLexer lexer = new LaserRaptorLexer(new ANTLRFileStream(systemResource.getFile()));
+        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+
+        LaserRaptorParser parser = new LaserRaptorParser(tokenStream);
+        ParserRuleContext laserRaptorContext = parser.laserRaptor();
+        System.out.println(laserRaptorContext.toStringTree(parser));
+
+        LaserRaptorListener laserRaptorListener = new LaserRaptorListener(true);
+
+        ParseTreeWalker walker = new ParseTreeWalker();
+        walker.walk(laserRaptorListener, laserRaptorContext);
+
+        GuiceModuleTemplate guiceModuleTemplate =
+            laserRaptorListener.getGuiceModuleTemplate();
+
+        String render = guiceModuleTemplate.render();
+        System.out.println(render);
+
+        Assert.assertTrue(render.contains("TestService_foo"));
+    }
+
+    @Test
     public void testShouldCreateOneMessage() throws Exception {
 
         URL systemResource =
@@ -79,7 +106,7 @@ public class LaserRaptorListenerTest {
         ParserRuleContext laserRaptorContext = parser.laserRaptor();
         System.out.println(laserRaptorContext.toStringTree(parser));
 
-        LaserRaptorListener laserRaptorListener = new LaserRaptorListener();
+        LaserRaptorListener laserRaptorListener = new LaserRaptorListener(false);
 
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(laserRaptorListener, laserRaptorContext);
@@ -118,7 +145,7 @@ public class LaserRaptorListenerTest {
         ParserRuleContext laserRaptorContext = parser.laserRaptor();
         System.out.println(laserRaptorContext.toStringTree(parser));
 
-        LaserRaptorListener laserRaptorListener = new LaserRaptorListener();
+        LaserRaptorListener laserRaptorListener = new LaserRaptorListener(false);
 
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(laserRaptorListener, laserRaptorContext);
@@ -180,7 +207,7 @@ public class LaserRaptorListenerTest {
         ParserRuleContext laserRaptorContext = parser.laserRaptor();
         System.out.println(laserRaptorContext.toStringTree(parser));
 
-        LaserRaptorListener laserRaptorListener = new LaserRaptorListener();
+        LaserRaptorListener laserRaptorListener = new LaserRaptorListener(false);
 
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(laserRaptorListener, laserRaptorContext);

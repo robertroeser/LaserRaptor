@@ -4,6 +4,7 @@ import laser.raptor.antlr.generated.LaserRaptorLexer;
 import laser.raptor.antlr.generated.LaserRaptorParser;
 import laser.raptor.laser.raptor.antlr.LaserRaptorListener;
 import laser.raptor.string_template.java.ClientServiceTemplate;
+import laser.raptor.string_template.java.GuiceModuleTemplate;
 import laser.raptor.string_template.java.MessageTemplate;
 import laser.raptor.string_template.java.ServerServiceTemplate;
 import org.antlr.v4.runtime.ANTLRFileStream;
@@ -24,6 +25,7 @@ public class LaserRaptor {
     private String input;
     private String output;
     private boolean server;
+    private boolean guice;
 
     public LaserRaptor(String input, String output, boolean server) {
         this.input = input;
@@ -45,6 +47,7 @@ public class LaserRaptor {
         options.addOption("a", "aeron", false, "Indicates wither or not to generate the source using Aeron or not");
         options.addOption("s", "server", false, "Indicates wither Laser Raptor is generating client or server code");
         options.addOption("o", "output", true, "Generator source output location");
+        options.addOption("g", "guice", false, "Indicates wither or not to generate Google Guice code - only valid with a JVM language");
         options.addOption("h", "help", false, "Prints this help message");
 
         CommandLineParser parser = new DefaultParser();
@@ -75,6 +78,7 @@ public class LaserRaptor {
         String input = cmd.getOptionValue("i");
         String output = cmd.getOptionValue("o");
         boolean server = cmd.hasOption("s");
+        boolean guice = cmd.hasOption("g");
 
         LaserRaptor laserRaptor = new LaserRaptor(input, output, server);
         laserRaptor.generate();
@@ -92,7 +96,7 @@ public class LaserRaptor {
         LaserRaptorParser parser = new LaserRaptorParser(tokenStream);
         ParserRuleContext laserRaptorContext = parser.laserRaptor();
 
-        LaserRaptorListener laserRaptorListener = new LaserRaptorListener();
+        LaserRaptorListener laserRaptorListener = new LaserRaptorListener(guice);
 
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(laserRaptorListener, laserRaptorContext);
@@ -126,6 +130,7 @@ public class LaserRaptor {
         }
 
         if (!server) {
+            System.out.println("Generating client code");
             for (ClientServiceTemplate clientServiceTemplate : clientServiceTemplates.values()) {
                 String packageName = clientServiceTemplate.getPackageName();
                 packageName = packageName.replace(".", File.separator);
@@ -142,7 +147,8 @@ public class LaserRaptor {
                 writer.flush();
                 writer.close();
             }
-        } else {
+        } else  {
+            System.out.println("Generating server code");
             for (ServerServiceTemplate template : serverServiceTemplates.values()) {
                 final String packageName = template.getPackageName().replace(".", File.separator);
                 File packageDir = new File(outputDirectory, packageName);
@@ -153,14 +159,40 @@ public class LaserRaptor {
                     String className = renderedService.getClassName() + ".java";
                     System.out.printf("Creating class named %s, in package %s\n", className, packageName);
                     String source = renderedService.getSource();
-                    System.out.printf("Writing contents [%s]\n", source);
+
                     File classFile = new File(packageDir, className);
-                    classFile.createNewFile();
-                    FileWriter writer = new FileWriter(classFile);
-                    writer.append(source);
-                    writer.flush();
-                    writer.close();
+
+                    if (classFile.exists()) {
+                        System.out.printf("Writing contents [%s]\n", source);
+                        classFile.createNewFile();
+                        FileWriter writer = new FileWriter(classFile);
+                        writer.append(source);
+                        writer.flush();
+                        writer.close();
+                    } else {
+                        System.out.println("The class file " + classFile.getName() + " already exists - skipping file");
+                    }
                 }
+            }
+
+            if (guice) {
+                GuiceModuleTemplate template = laserRaptorListener.getGuiceModuleTemplate();
+                System.out.println("Generating guice server config");
+                final String packageName = template.getPackageName().replace(".", File.separator);
+                File packageDir = new File(outputDirectory, packageName);
+                packageDir.mkdirs();
+
+                String className = template.getClassName() + ".java";
+                System.out.printf("Creating class named %s, in package %s\n", className, packageName);
+                String source = template.render();
+
+                File classFile = new File(packageDir, className);
+                System.out.printf("Writing contents [%s]\n", source);
+                classFile.createNewFile();
+                FileWriter writer = new FileWriter(classFile);
+                writer.append(source);
+                writer.flush();
+                writer.close();
             }
         }
     }

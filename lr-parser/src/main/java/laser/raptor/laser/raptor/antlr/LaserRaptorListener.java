@@ -4,6 +4,7 @@ import laser.raptor.antlr.generated.LaserRaptorBaseListener;
 import laser.raptor.antlr.generated.LaserRaptorParser;
 import laser.raptor.core.InteractionModel;
 import laser.raptor.string_template.java.ClientServiceTemplate;
+import laser.raptor.string_template.java.GuiceModuleTemplate;
 import laser.raptor.string_template.java.MessageTemplate;
 import laser.raptor.string_template.java.ServerServiceTemplate;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -36,11 +37,16 @@ public class LaserRaptorListener extends LaserRaptorBaseListener {
 
     private Map<String, ServerServiceTemplate> serverServiceTemplates;
 
-    public LaserRaptorListener() {
+    private GuiceModuleTemplate guiceModuleTemplate;
+    private boolean guice;
+
+    public LaserRaptorListener(boolean guice) {
         messageTemplates = new HashMap<>();
         serviceFunctionNames = new HashSet<>();
         clientServiceTemplates = new HashMap<>();
         serverServiceTemplates = new HashMap<>();
+
+        this.guice = guice;
     }
 
     @Override
@@ -121,10 +127,11 @@ public class LaserRaptorListener extends LaserRaptorBaseListener {
         currentClientServiceTemplate.packageName(packageName);
         clientServiceTemplates.put(currentServiceName, currentClientServiceTemplate);
 
-        currentServerServiceTemplate = ServerServiceTemplate.newServerServiceTemplate();
+        currentServerServiceTemplate = ServerServiceTemplate.newServerServiceTemplate(guice);
         currentServerServiceTemplate.className(text);
         currentServerServiceTemplate.packageName(packageName);
         serverServiceTemplates.put(currentServiceName, currentServerServiceTemplate);
+
     }
 
     @Override
@@ -164,6 +171,16 @@ public class LaserRaptorListener extends LaserRaptorBaseListener {
                 text.hashCode());
 
         currentServerServiceTemplate.addServerService(serverServiceModel);
+
+        if (guice) {
+            if (guiceModuleTemplate == null) {
+                guiceModuleTemplate = GuiceModuleTemplate
+                    .newGuiceModuleTemplate()
+                    .packageName(packageName);
+            }
+
+            guiceModuleTemplate.addClassToBind(currentServiceName + "_" + text);
+        }
     }
 
     public Map<String, ServerServiceTemplate> getServerServiceTemplates() {
@@ -176,5 +193,9 @@ public class LaserRaptorListener extends LaserRaptorBaseListener {
 
     public Map<String, ClientServiceTemplate> getClientServiceTemplates() {
         return clientServiceTemplates;
+    }
+
+    public GuiceModuleTemplate getGuiceModuleTemplate() {
+        return guiceModuleTemplate;
     }
 }

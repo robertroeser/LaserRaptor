@@ -6,7 +6,6 @@ import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,12 +19,20 @@ public class ServerServiceTemplate extends JavaTemplate {
     STGroup serverServiceGroup;
 
     protected ServerServiceTemplate() {
+        this(false);
+    }
+
+    protected ServerServiceTemplate(boolean guice) {
         super();
 
         serverServiceModels = new ArrayList<>();
 
         stGroupDir.load();
-        String fileName = "templates/java/LaserRaptorServerFunction.stg";
+
+        String fileName = guice
+            ?  "templates/java/LaserRaptorServerFunctionWithGuice.stg"
+            :  "templates/java/LaserRaptorServerFunction.stg";
+
         serverServiceGroup = new STGroupFile(fileName);
 
     }
@@ -35,8 +42,13 @@ public class ServerServiceTemplate extends JavaTemplate {
         return this;
     }
 
+    public static ServerServiceTemplate newServerServiceTemplate(boolean useGuice) {
+        return new ServerServiceTemplate(useGuice);
+    }
+
+
     public static ServerServiceTemplate newServerServiceTemplate() {
-        return new ServerServiceTemplate();
+        return newServerServiceTemplate(false);
     }
 
     protected String renderFunction(ServerServiceModel serverServiceModel) {
