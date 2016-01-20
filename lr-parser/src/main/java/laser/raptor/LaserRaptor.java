@@ -28,9 +28,14 @@ public class LaserRaptor {
     private boolean guice;
 
     public LaserRaptor(String input, String output, boolean server) {
+        this(input, output, server, false);
+    }
+
+    public LaserRaptor(String input, String output, boolean server, boolean guice) {
         this.input = input;
         this.output = output;
         this.server = server;
+        this.guice = guice;
 
         System.out.println("Processing input file => " + input);
         System.out.println("Saving contents to output directory => " + output);
@@ -80,7 +85,7 @@ public class LaserRaptor {
         boolean server = cmd.hasOption("s");
         boolean guice = cmd.hasOption("g");
 
-        LaserRaptor laserRaptor = new LaserRaptor(input, output, server);
+        LaserRaptor laserRaptor = new LaserRaptor(input, output, server, guice);
         laserRaptor.generate();
     }
 
