@@ -109,9 +109,9 @@ public class ServerServiceTemplateTest {
 
         List<ServerServiceTemplate.RenderedService> render = serverServiceTemplate.render();
         render.forEach(s -> {
-            Assert.assertNotNull(s);
-            System.out.println(s);
-            Assert.assertTrue(s.getSource().contains("public class FooService_foo implements RequestResponseServerFunction<String, String> {"));
+            Assert.assertNotNull("rendered content is null", s);
+            System.out.println(s.getSource());
+            Assert.assertTrue("not rendering expected content", s.getSource().contains("public abstract class BaseFooService_foo implements RequestResponseServerFunction<String, String> {"));
         });
     }
 
