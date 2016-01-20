@@ -25,7 +25,7 @@ fire(hash, method_id, request_type, service_name, class_name, service_id, reques
         serviceId = <service_id>,
         serviceName = <service_name>,
         methodName = <class_name>)
-public abstract class <service_name>_<class_name> implements FireAndForgetServerFunction\<<request_type>\> {
+public abstract class Base<service_name>_<class_name> implements FireAndForgetServerFunction\<<request_type>\> {
     @Override
     public abstract Observable\<Void\> apply(Observable\<<request_type>\> <request_type_name>);
 }
@@ -42,7 +42,7 @@ request(hash, method_id, request_type, response_type, service_name, class_name, 
         serviceId = <service_id>,
         serviceName = <service_name>,
         methodName = <class_name>)
-public abstract class <service_name>_<class_name> implements RequestResponseServerFunction\<<request_type>, <response_type>\> {
+public abstract class Base<service_name>_<class_name> implements RequestResponseServerFunction\<<request_type>, <response_type>\> {
     @Override
     public abstract Observable\<<response_type>\> apply(Observable\<<request_type>\> <request_type_name>);
 }
@@ -59,7 +59,7 @@ requestN(hash, method_id, request_type, response_type, service_name, class_name,
           serviceId = <service_id>,
           serviceName = <service_name>,
           methodName = <class_name>)
-  public abstract class <service_name>_<class_name> implements RequestNServerFunction\<<request_type>, <response_type>\> {
+  public abstract class Base<service_name>_<class_name> implements RequestNServerFunction\<<request_type>, <response_type>\> {
       @Override
       public abstract Observable\<<response_type>\> apply(Observable\<<request_type>\> <request_type_name>);
   }
@@ -76,7 +76,7 @@ subscription(hash, method_id, request_type, response_type, service_name, class_n
           serviceId = <service_id>,
           serviceName = <service_name>,
           methodName = <class_name>)
-  public abstract class <service_name>_<class_name> implements SubscribeServerFunction\<<request_type>, <response_type>\> {
+  public abstract class Base<service_name>_<class_name> implements SubscribeServerFunction\<<request_type>, <response_type>\> {
       @Override
       public abstract Observable\<<response_type>\> apply(Observable\<<request_type>\> <request_type_name>);
   }
@@ -93,7 +93,7 @@ channel(hash, method_id, request_type, response_type, service_name, class_name, 
           serviceId = <service_id>,
           serviceName = <service_name>,
           methodName = <class_name>)
-  public abstract class <service_name>_<class_name> implements ChannelServerFunction\<<request_type>, <response_type>\> {
+  public abstract class Base<service_name>_<class_name> implements ChannelServerFunction\<<request_type>, <response_type>\> {
       @Override
       public abstract Observable\<<response_type>\> apply(Observable\<<request_type>\> <request_type_name>);
   }
