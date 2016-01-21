@@ -167,7 +167,7 @@ public class LaserRaptor {
 
                     File classFile = new File(packageDir, className);
 
-                    if (classFile.exists()) {
+                    if (!classFile.exists()) {
                         System.out.printf("Writing contents [%s]\n", source);
                         classFile.createNewFile();
                         FileWriter writer = new FileWriter(classFile);
