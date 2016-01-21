@@ -3,10 +3,13 @@ allprojects {
     apply plugin: 'nebula.dependency-lock'
 }
 
+
 subprojects {
     apply plugin: 'nebula.javadoc-jar'
     apply plugin: 'nebula.source-jar'
     apply plugin: 'java'
+
+    version = '1.0.1-SNAPSHOT'
 
     repositories {
         jcenter()
