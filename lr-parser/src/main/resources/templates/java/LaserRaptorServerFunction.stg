@@ -22,7 +22,9 @@ fire(hash, method_id, request_type, service_name, class_name, service_id, reques
         requestClass = <request_type>.class,
         responseClass = Void.class,
         serviceClass = <service_name>_<class_name>.class,
-        serviceId = <service_id>)
+        serviceId = <service_id>,
+      serviceName = <service_name>,
+      methodName = <class_name>)
 public class <service_name>_<class_name> implements FireAndForgetServerFunction\<<request_type>\> {
     @Override
     public Observable\<Void\> apply(Observable\<<request_type>\> <request_type_name>) {
@@ -39,7 +41,9 @@ request(hash, method_id, request_type, response_type, service_name, class_name, 
         requestClass = <request_type>.class,
         responseClass = <response_type>.class,
         serviceClass = <service_name>_<class_name>.class,
-        serviceId = <service_id>)
+        serviceId = <service_id>,
+      serviceName = <service_name>,
+      methodName = <class_name>)
 public class <service_name>_<class_name> implements RequestResponseServerFunction\<<request_type>, <response_type>\> {
     @Override
     public Observable\<<response_type>\> apply(Observable\<<request_type>\> <request_type_name>) {
@@ -56,7 +60,9 @@ requestN(hash, method_id, request_type, response_type, service_name, class_name,
           requestClass = <request_type>.class,
           responseClass = <response_type>.class,
           serviceClass = <service_name>_<class_name>.class,
-          serviceId = <service_id>)
+          serviceId = <service_id>,
+        serviceName = <service_name>,
+        methodName = <class_name>)
   public class <service_name>_<class_name> implements RequestNServerFunction\<<request_type>, <response_type>\> {
       @Override
       public Observable\<<response_type>\> apply(Observable\<<request_type>\> <request_type_name>) {
@@ -73,7 +79,9 @@ subscription(hash, method_id, request_type, response_type, service_name, class_n
           requestClass = <request_type>.class,
           responseClass = <response_type>.class,
           serviceClass = <service_name>_<class_name>.class,
-          serviceId = <service_id>)
+          serviceId = <service_id>,
+        serviceName = <service_name>,
+        methodName = <class_name>)
   public class <service_name>_<class_name> implements SubscribeServerFunction\<<request_type>, <response_type>\> {
       @Override
       public Observable\<<response_type>\> apply(Observable\<<request_type>\> <request_type_name>) {
@@ -90,7 +98,9 @@ channel(hash, method_id, request_type, response_type, service_name, class_name, 
           requestClass = <request_type>.class,
           responseClass = <response_type>.class,
           serviceClass = <service_name>_<class_name>.class,
-          serviceId = <service_id>)
+          serviceId = <service_id>,
+          serviceName = <service_name>,
+          methodName = <class_name>)
   public class <service_name>_<class_name> implements ChannelServerFunction\<<request_type>, <response_type>\> {
       @Override
       public Observable\<<response_type>\> apply(Observable\<<request_type>\> <request_type_name>) {
