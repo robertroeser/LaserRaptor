@@ -4,6 +4,7 @@ package <package_name>;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
+import laser.raptor.core.server.server_functions.ServerFunction;
 
 public class GeneratedGuiceConfig extends AbstractModule {
     @Override
