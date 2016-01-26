@@ -3,7 +3,6 @@ allprojects {
     apply plugin: 'nebula.dependency-lock'
 }
 
-
 subprojects {
     apply plugin: 'nebula.javadoc-jar'
     apply plugin: 'nebula.source-jar'
@@ -14,10 +13,6 @@ subprojects {
     repositories {
         jcenter()
         maven { url 'https://oss.jfrog.org/libs-snapshot' }
-    }
-
-    nebula {
-        moduleOwner = 'rroeser@netflix.com'
     }
 
     dependencyLock {
